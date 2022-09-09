@@ -11,8 +11,17 @@ class Role extends Model
     use HasFactory;
 
     const TYPE = [
-        'ADMINISTRATOR','NOTARY','CLIENT'
+        'ADMINISTRATOR','CLIENT','NOTARY'
     ];
+    
+    const ADMINISTRATOR = self::TYPE[0];
+    const CLIENT = self::TYPE[1];
+    const NOTARY = self::TYPE[2];
+
+    const REGISTER_TYPE = [
+        self::CLIENT, self::NOTARY
+    ];
+
     protected $fillable = ['id','type'];
 
     protected $casts = [

@@ -36,6 +36,16 @@ return [
             'throw' => false,
         ],
 
+        'notary_passport_images' => [
+            'driver' =>'local',
+            'root'   => env('APP_STORAGE', storage_path('app').'/notary_passport_images'),
+        ],
+
+        'notary_photocopy_ids' => [
+            'driver' =>'local',
+            'root'   => env('APP_STORAGE', storage_path('app').'/notary_photocopy_ids'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

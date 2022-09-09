@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('names');
             $table->string('email')->unique();
             $table->bigInteger('telephone');
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
