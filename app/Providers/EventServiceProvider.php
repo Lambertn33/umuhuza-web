@@ -20,10 +20,6 @@ class EventServiceProvider extends ServiceProvider
         NotaryRegistered::class => [
             NotaryRegisteredListener::class,
         ],
-
-        ClientRegistered::class => [
-            ClientRegisteredListener::class,
-        ],
     ];
 
     /**

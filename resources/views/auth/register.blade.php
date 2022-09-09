@@ -68,7 +68,7 @@
                                         </form>
     
                                         <div class="mt-2 pt-2 text-center">
-                                            <p class="text-muted mb-0">Already have an account ? <a href="{{route('login')}}" class="text-primary fw-semibold"> Login </a> </p>
+                                            <p class="text-muted mb-0">Already have an account ? <a href="{{route('getLoginPage')}}" class="text-primary fw-semibold"> Login </a> </p>
                                         </div>
                                     </div>
                                     <div class="mt-2 text-center">

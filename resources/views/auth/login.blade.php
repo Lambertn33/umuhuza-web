@@ -20,9 +20,16 @@
                                             <h5 class="mb-0">Welcome Back !</h5>
                                             <p class="text-muted mt-2">Sign in to continue</p>
                                         </div>
-                                        <form class="mt-4 pt-2" action="#">
+                                        @if (Session::has('danger'))
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            {{ Session::get('danger') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div> 
+                                        @endif
+                                        <form class="mt-4 pt-2" action="{{route('authenticate')}}" method="POST">
+                                            @csrf
                                             <div class="form-floating form-floating-custom mb-4">
-                                                <input type="text" class="form-control" id="input-username" placeholder="Enter Telephone or Email">
+                                                <input type="text" class="form-control" id="input-username" name="username" placeholder="Enter Telephone or Email">
                                                 <label for="input-username">Email/Telephone</label>
                                                 <div class="form-floating-icon">
                                                     <i data-eva="people-outline"></i>
@@ -30,7 +37,7 @@
                                             </div>
     
                                             <div class="form-floating form-floating-custom mb-4 auth-pass-inputgroup">
-                                                <input type="password" class="form-control pe-5" id="password-input" placeholder="Enter Password">
+                                                <input type="password" class="form-control pe-5" name="password" id="password-input" placeholder="Enter Password">
                                                 
                                                 <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-addon">
                                                     <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>

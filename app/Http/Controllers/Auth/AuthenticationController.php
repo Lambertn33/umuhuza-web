@@ -8,9 +8,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Client;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
 {
+    public function getLoginPage(Request $request)
+    {
+        if ($request->session()->has('registrationData')) {
+            $request->session()->forget('registrationData');
+        }
+        return view('auth.login');
+    }
+
     public function getRegistrationPage(Request $request)
     {
         $data = [];
@@ -88,6 +99,7 @@ class AuthenticationController extends Controller
                     'updated_at' => now()
                 ];
                 NotaryRegistered::dispatch($newUser, $newNotary);
+                return redirect()->route('getConfirmationPage');
             } else {
                 $national_id = $request->national_id;
                 $newUser = [
@@ -106,11 +118,36 @@ class AuthenticationController extends Controller
                     'created_at' => now(),
                     'updated_at' => now()
                 ];
-            ClientRegistered::dispatch($newUser, $newClient);
+                User::insert($newUser);
+                Client::insert($newClient);
+
+                //TODO...Job To Send Welcome Message and Password
+                return redirect()->route('getConfirmationPage');
             }
             
         } catch (\Throwable $th) {
             throw $th;
+        }
+    }
+
+    public function getConfirmationPage(Request $request)
+    {
+        if (!$request->session()->has('registrationData')) {
+            return back();
+        }
+        $data =  $request->session()->get('registrationData');
+        return view('auth.confirm',compact('data'));
+
+    }
+
+    public function authenticate(Request $request)
+    {
+        $username = $request->username;
+        $password = $request->password;
+        if ( (Auth::attempt(['email' => $username, 'password' => $password])) || (Auth::attempt(['telephone' => $username, 'password' => $password])) ) {
+            return Auth::user();
+        } else {
+            return back()->withInput()->with('danger','Invalid credentials..');
         }
     }
 
