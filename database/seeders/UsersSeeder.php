@@ -30,7 +30,27 @@ class UsersSeeder extends Seeder
                 'password' => Hash::make('admin12345'),
                 'created_at' => now(),
                 'updated_at' => now(),
-            )
+            ),
+            1 => array (
+                'id' => '932813c1-dfbf-4642-9f5a-aae0a1f13dbc',
+                'role_id' => Role::where('type', \App\Models\Role::NOTARY)->value('id'),
+                'names' => 'Notary',
+                'email' => 'notary@gmail.com',
+                'telephone' => +250788222222,
+                'password' => Hash::make('notary12345'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ),
+            2 => array (
+                'id' => '7435ff53-d361-4850-afc7-ca66a2a596b8',
+                'role_id' => Role::where('type', \App\Models\Role::CLIENT)->value('id'),
+                'names' => 'Client',
+                'email' => 'client@gmail.com',
+                'telephone' => +250788333333,
+                'password' => Hash::make('client12345'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ),
         ));
     }
 }

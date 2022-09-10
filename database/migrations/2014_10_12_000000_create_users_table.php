@@ -18,8 +18,9 @@ return new class extends Migration
             $table->uuid('role_id');
             $table->string('names');
             $table->string('email')->unique();
-            $table->bigInteger('telephone');
+            $table->bigInteger('telephone')->unique();
             $table->string('password')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

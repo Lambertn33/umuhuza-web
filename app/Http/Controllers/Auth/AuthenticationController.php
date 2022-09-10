@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Events\ClientRegistered;
 use App\Events\NotaryRegistered;
 use App\Http\Controllers\Controller;
+use App\Http\Services\CheckUserRoleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Notary;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
@@ -34,7 +35,20 @@ class AuthenticationController extends Controller
 
     public function registerOnFirstPage(Request $request)
     {
+        $phoneFormat = 2507;
+        $phoneTotalDigits = 12;
         $data = $request->all();
+        $emailValidation = User::where('email', $data['email']);
+        $phoneValidation = User::where('telephone', $data['telephone']);
+        if ((substr($data['telephone'], 0, 4) != $phoneFormat) || strlen($data['telephone']) != $phoneTotalDigits) {
+            return back()->withInput()->with('error','The Telephone number must start with '. $phoneFormat .'... and consists of '.$phoneTotalDigits.' digits');
+        }
+        if ($emailValidation->exists()) {
+            return back()->withInput()->with('error','The email provided has been already taken');
+        }
+        if ($phoneValidation->exists()) {
+            return back()->withInput()->with('error','The telephone provided has been already taken');
+        }
         $request->session()->put('registrationData', $data);
         return redirect()->route('getRegistrationNextPage');
     }
@@ -57,15 +71,34 @@ class AuthenticationController extends Controller
             $names = $data['names'];
             $role = $data['role'];
             $email = $data['email'];
-            $telephone = $data['telephone'];          
+            $telephone = $data['telephone'];   
+            $national_id = $request->national_id;
+            if (strlen($national_id) != 16) {
+                return back()->withInput()->with('error','The national ID Must consists of 16 digits');
+            }
+
+            if ($this->validateNationalID($national_id)) {
+                return back()->withInput()->with('error','The national ID provided already exists');
+            }
+
             
             if ($role === \App\Models\Role::NOTARY) {
-                $national_id = $request->national_id;
                 $district = $request->district;
                 $sector = $request->sector;
                 $cell = $request->cell;
                 $image = '';
                 $nationalIdPhotocopy = '';
+                $newUser = [
+                    'id' => Str::uuid()->toString(),
+                    'role_id' => Role::where('type',$data['role'])->value('id'),
+                    'names' => $names,
+                    'email' => $email,
+                    'telephone' => $telephone,
+                    'is_active' => false,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]; 
+                
                 if ($request->hasFile('image')) {
                     $image = $this->storeFile($request, 'image', $telephone, 'notary_passport_images');
                 }
@@ -73,17 +106,6 @@ class AuthenticationController extends Controller
                 if ($request->hasFile('national_id_photocopy')) {
                    $nationalIdPhotocopy =  $this->storeFile($request, 'national_id_photocopy', $telephone, 'notary_photocopy_ids');
                 }
-
-                $newUser = [
-                    'id' => Str::uuid()->toString(),
-                    'role_id' => Role::where('type',$data['role'])->value('id'),
-                    'names' => $names,
-                    'email' => $email,
-                    'telephone' => $telephone,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]; 
-                
                 $newNotary = [
                     'id' => Str::uuid()->toString(),
                     'user_id' => $newUser['id'],
@@ -101,7 +123,6 @@ class AuthenticationController extends Controller
                 NotaryRegistered::dispatch($newUser, $newNotary);
                 return redirect()->route('getConfirmationPage');
             } else {
-                $national_id = $request->national_id;
                 $newUser = [
                     'id' => Str::uuid()->toString(),
                     'role_id' => Role::where('type',$data['role'])->value('id'),
@@ -145,10 +166,27 @@ class AuthenticationController extends Controller
         $username = $request->username;
         $password = $request->password;
         if ( (Auth::attempt(['email' => $username, 'password' => $password])) || (Auth::attempt(['telephone' => $username, 'password' => $password])) ) {
-            return Auth::user();
+           if (Auth::user()->is_active) {
+            $authenticatedUser = Auth::user();
+            if ((new CheckUserRoleService)->isAdministrator($authenticatedUser)) {
+                return redirect()->route('getAdminDashboardOverview');
+            }else if ((new CheckUserRoleService)->isNotary($authenticatedUser)) {
+                return redirect()->route('getNotaryDashboardOverview');
+            } else{
+                return redirect()->route('getClientDashboardOverview');
+            }
+           } else {
+             return back()->withInput()->with('error','Your account is locked.. please contact the system administrator');
+           }
         } else {
-            return back()->withInput()->with('danger','Invalid credentials..');
+            return back()->withInput()->with('error','Invalid credentials..');
         }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('getLoginPage');
     }
 
     public function storeFile($request, $file, $tel, $disk) {
@@ -156,5 +194,13 @@ class AuthenticationController extends Controller
         $filename = time() . '_'.$tel.'.' .$uploadedFile->getClientOriginalExtension();
         $finalFile = $uploadedFile->storeAs(date('YF'),$filename, $disk);
         return $finalFile;        
+    }
+
+    public function validateNationalID($input){
+        if (Notary::where('national_id', $input)->exists() || Client::where('national_id', $input)->exists()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

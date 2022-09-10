@@ -19,6 +19,22 @@
 
     </head>
 
+    <style>
+        .card-body {
+            max-height: 90vh;
+            overflow: auto;
+        }
+        ::-webkit-scrollbar {
+            width: 0.4375rem;
+            border: 0.0625rem solid transparent;
+        }
+    
+        ::-webkit-scrollbar-thumb {
+            background: gray; 
+            border-radius: 3.125rem;
+        }
+    </style>
+
    <body>
         <div class="auth-page">
             <div class="container-fluid p-0">

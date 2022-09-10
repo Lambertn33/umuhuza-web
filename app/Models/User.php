@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'telephone',
         'role_id',
+        'is_active',
         'password',
     ];
 
@@ -77,4 +78,5 @@ class User extends Authenticatable
     {
         return $this->hasOne(Client::class, 'user_id', 'id');
     }
+
 }

@@ -1,22 +1,6 @@
-@extends('layouts.auth')
-
+@extends('auth.layouts')
 
 @section('content')
-<style>
-    .card-body {
-        max-height: 90vh;
-        overflow: auto;
-    }
-    ::-webkit-scrollbar {
-        width: 0.4375rem;
-        border: 0.0625rem solid transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: gray; 
-        border-radius: 3.125rem;
-    }
-</style>
 <div class="col-xxl-4 col-lg-4 col-md-6">
     <div class="row justify-content-center g-0">
         <div class="col-xl-9">
@@ -33,9 +17,16 @@
                                     </div>
                                     <div class="auth-content my-auto">
                                         <div class="text-center">
+                                            @if (Session::has('error'))
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                <b>{{ Session::get('error') }}</b>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div> 
+                                            @else
                                             <div class="alert alert-info fade show mb-0" role="alert">
                                                 Thank you <b>{{$names}}</b> for your interest of joining as a <b>{{$role}}</b>! Please provide the information below
                                             </div>
+                                             @endif
                                         </div>
                                         <form class="mt-4 pt-2" action="{{route('submitRegistration')}}" method="POST" enctype="multipart/form-data">
                                             @csrf
@@ -44,7 +35,7 @@
                                                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                                 type = "number"
                                                 maxlength = "16"
-                                                class="form-control" id="input-national_id" name="national_id" placeholder="Enter National ID" required>
+                                                class="form-control" value="{{old('national_id')}}" id="input-national_id" name="national_id" placeholder="Enter National ID" required>
                                                 <label for="input-national_id">National ID Number</label>
                                                 <div class="form-floating-icon">
                                                     <i data-eva="person-add-outline"></i>
