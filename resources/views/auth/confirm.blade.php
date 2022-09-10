@@ -11,8 +11,8 @@
                             <div class="w-100">
                                 <div class="d-flex flex-column h-100">
                                     <div class="mb-4 mb-md-5">
-                                        <a href="" class="d-block auth-logo">
-                                            <h2>Logo</h2>
+                                        <a href="#" class="d-block auth-logo">
+                                           <img src="/assets/images/umurinzi_logo.jpg" width="100%" alt="">
                                         </a>
                                     </div>
                                     <div class="auth-content my-auto">
