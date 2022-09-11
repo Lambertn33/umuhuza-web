@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Events\NotaryRegistered;
 use App\Http\Controllers\Controller;
-use App\Http\Services\CheckUserRoleService;
+use App\Http\Services\Auth\CheckUserRoleService;
+use App\Http\Services\Common\FileStoring;
+use App\Http\Services\Common\ValidateInputs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Role;
@@ -12,6 +14,7 @@ use App\Models\User;
 use App\Models\Client;
 use App\Models\Notary;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticationController extends Controller
 {
@@ -40,7 +43,7 @@ class AuthenticationController extends Controller
         $data = $request->all();
         $emailValidation = User::where('email', $data['email']);
         $phoneValidation = User::where('telephone', $data['telephone']);
-        if ((substr($data['telephone'], 0, 4) != $phoneFormat) || strlen($data['telephone']) != $phoneTotalDigits) {
+        if (!(new ValidateInputs)->validatePhoneNumber($data['telephone'], $phoneFormat, $phoneTotalDigits)) {
             return back()->withInput()->with('error','The Telephone number must start with '. $phoneFormat .'... and consists of '.$phoneTotalDigits.' digits');
         }
         if ($emailValidation->exists()) {
@@ -50,7 +53,7 @@ class AuthenticationController extends Controller
             return back()->withInput()->with('error','The telephone provided has been already taken');
         }
         $request->session()->put('registrationData', $data);
-        return redirect()->route('getRegistrationNextPage');
+        return redirect()->route('getRegistrationNextPage'); 
     }
 
     public function getRegistrationNextPage(Request $request)
@@ -67,17 +70,18 @@ class AuthenticationController extends Controller
     public function submitRegistration(Request $request)
     {
         try {
+            DB::beginTransaction();
             $data = $request->session()->get('registrationData');
             $names = $data['names'];
             $role = $data['role'];
             $email = $data['email'];
             $telephone = $data['telephone'];   
             $national_id = $request->national_id;
-            if (strlen($national_id) != 16) {
+            if (!(new ValidateInputs)->validateNationalIDLength($national_id)) {
                 return back()->withInput()->with('error','The national ID Must consists of 16 digits');
             }
 
-            if ($this->validateNationalID($national_id)) {
+            if( (new ValidateInputs)->validateNationalIDExistence($national_id)) {
                 return back()->withInput()->with('error','The national ID provided already exists');
             }
 
@@ -100,11 +104,11 @@ class AuthenticationController extends Controller
                 ]; 
                 
                 if ($request->hasFile('image')) {
-                    $image = $this->storeFile($request, 'image', $telephone, 'notary_passport_images');
+                    $image = (new FileStoring)->storeFile($request, 'image', $telephone, 'notary_passport_images');
                 }
     
                 if ($request->hasFile('national_id_photocopy')) {
-                   $nationalIdPhotocopy =  $this->storeFile($request, 'national_id_photocopy', $telephone, 'notary_photocopy_ids');
+                   $nationalIdPhotocopy = (new FileStoring)->storeFile($request, 'national_id_photocopy', $telephone, 'notary_photocopy_ids');
                 }
                 $newNotary = [
                     'id' => Str::uuid()->toString(),
@@ -121,6 +125,7 @@ class AuthenticationController extends Controller
                     'updated_at' => now()
                 ];
                 NotaryRegistered::dispatch($newUser, $newNotary);
+                DB::commit();
                 return redirect()->route('getConfirmationPage');
             } else {
                 $newUser = [
@@ -141,12 +146,13 @@ class AuthenticationController extends Controller
                 ];
                 User::insert($newUser);
                 Client::insert($newClient);
-
+                DB::commit();
                 //TODO...Job To Send Welcome Message and Password
                 return redirect()->route('getConfirmationPage');
             }
             
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }
@@ -194,13 +200,5 @@ class AuthenticationController extends Controller
         $filename = time() . '_'.$tel.'.' .$uploadedFile->getClientOriginalExtension();
         $finalFile = $uploadedFile->storeAs(date('YF'),$filename, $disk);
         return $finalFile;        
-    }
-
-    public function validateNationalID($input){
-        if (Notary::where('national_id', $input)->exists() || Client::where('national_id', $input)->exists()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

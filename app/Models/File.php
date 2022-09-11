@@ -18,7 +18,7 @@ class File extends Model
     const CLIENT_UPLOAD = self::TYPE[1];
 
     protected $fillable = [
-        'id','filename','owner','file_path','file_type'
+        'id','filename','owner','file_path','file_type','file_number'
     ];
 
     protected $casts = [

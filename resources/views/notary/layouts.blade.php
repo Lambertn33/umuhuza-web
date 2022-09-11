@@ -13,6 +13,17 @@
         <!-- App favicon -->
         <link rel="shortcut icon" href="assets/images/favicon.ico">
 
+                <!-- choices css -->
+        <link href="/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css" />
+
+        <!-- color picker css -->
+        <link rel="stylesheet" href="/assets/libs/%40simonwep/pickr/themes/classic.min.css"/> <!-- 'classic' theme -->
+        <link rel="stylesheet" href="/assets/libs/%40simonwep/pickr/themes/monolith.min.css"/> <!-- 'monolith' theme -->
+        <link rel="stylesheet" href="/assets/libs/%40simonwep/pickr/themes/nano.min.css"/> <!-- 'nano' theme -->
+
+        <!-- datepicker css -->
+        <link rel="stylesheet" href="/assets/libs/flatpickr/flatpickr.min.css">
+
         <!-- Bootstrap Css -->
         <link href="/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
         <!-- Icons Css -->
@@ -21,6 +32,37 @@
         <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
     </head>
+
+    <style>
+        table.datatable.no-footer {
+            border: none;
+        }
+        table.datatable thead th, table.datatable thead td {
+            
+        }
+        table.datatable thead th {
+            font-weight: 600;
+            border: none;
+            font-size: 14px;
+        }
+        table.datatable tbody th{
+            padding: 0.75rem 0.625rem;
+            border: none;
+        }
+        table.datatable tbody td {
+            padding: 1rem 0.625rem;
+            border: none;
+            font-size: 0.875rem
+        }
+        .dataTables_length select {
+            padding: 0.1875rem;
+            border-color: gray;
+            border-radius: 0.375rem
+        }
+        .dataTables_info, .dataTables_paginate {
+            margin-top: 0.5rem;
+        }
+    </style>
 
     
     <body data-sidebar="dark">
@@ -54,7 +96,7 @@
                         </button>
 
                         <div class="d-none d-sm-block ms-3 align-self-center">
-                            <h4 class="page-title">Dashboard</h4>
+                            @yield('title')
                         </div>
 
                     </div>
@@ -201,7 +243,8 @@
                                     <span class="menu-item" data-key="t-ecommerce">My Files</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" data-key="t-products">Files Uploaded</a></li>
+                                    <li><a href="{{route('myNotaryFiles')}}" data-key="t-products">Uploaded Files</a></li>
+                                    <li><a href="#" data-key="t-products">Tagged Files</a></li>
                                     <li><a href="#" data-key="t-products">Files Access Requests</a></li>
                                 </ul>
                             </li>
@@ -241,7 +284,9 @@
                         </button>
 
                         <div class="d-none d-sm-block ms-2 align-self-center">
-                            <h4 class="page-title">Dashboard</h4>
+                            <h4 class="page-title">
+                                @yield('title')
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -262,7 +307,28 @@
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->
-            @yield('content')
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="container-fluid">
+            
+                        @yield('content')
+                        <!-- end row -->
+                    </div>
+                    <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+            
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <script>document.write(new Date().getFullYear())</script> &copy;
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- end main content-->
             <!-- end main content-->
 
         </div>
@@ -286,6 +352,19 @@
         <script src="/assets/js/pages/dashboard.init.js"></script>
 
         <script src="/assets/js/app.js"></script>
+
+                <!-- choices js -->
+        <script src="/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+
+        <!-- color picker js -->
+        <script src="/assets/libs/%40simonwep/pickr/pickr.min.js"></script>
+        <script src="/assets/libs/%40simonwep/pickr/pickr.es5.min.js"></script>
+
+        <!-- datepicker js -->
+        <script src="/assets/libs/flatpickr/flatpickr.min.js"></script>
+
+        <!-- init js -->
+        <script src="/assets/js/pages/form-advanced.init.js"></script>
 
     </body>
 

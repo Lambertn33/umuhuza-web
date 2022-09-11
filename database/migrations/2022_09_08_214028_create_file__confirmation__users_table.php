@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('names');
             $table->bigInteger('telephone');
             $table->bigInteger('national_id');
+            $table->string('confirmation_code');
             $table->enum('status', \App\Models\File_Confirmation_User::STATUS)->default(\App\Models\File_Confirmation_User::PENDING); 
             $table->timestamps();
         });

@@ -33,7 +33,6 @@
                                             <div class="form-floating form-floating-custom mb-4">
                                                 <input type="number" 
                                                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                type = "number"
                                                 maxlength = "16"
                                                 class="form-control" value="{{old('national_id')}}" id="input-national_id" name="national_id" placeholder="Enter National ID" required>
                                                 <label for="input-national_id">National ID Number</label>

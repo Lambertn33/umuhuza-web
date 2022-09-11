@@ -53,4 +53,5 @@ class Notary extends Model
     {
         return $this->hasMany(File_Sending::class, 'notary_id', 'id');
     }
+    
 }

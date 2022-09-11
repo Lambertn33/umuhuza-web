@@ -11,7 +11,9 @@
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesbrand" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <link rel="shortcut icon" href="/assets/images/favicon.ico">
+        <!-- gridjs css -->
+        <link rel="stylesheet" href="/assets/libs/gridjs/theme/mermaid.min.css">
 
         <!-- Bootstrap Css -->
         <link href="/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -21,6 +23,37 @@
         <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
     </head>
+
+    <style>
+        table.datatable.no-footer {
+            border: none;
+        }
+        table.datatable thead th, table.datatable thead td {
+            
+        }
+        table.datatable thead th {
+            font-weight: 600;
+            border: none;
+            font-size: 14px;
+        }
+        table.datatable tbody th{
+            padding: 0.75rem 0.625rem;
+            border: none;
+        }
+        table.datatable tbody td {
+            padding: 1rem 0.625rem;
+            border: none;
+            font-size: 0.875rem
+        }
+        .dataTables_length select {
+            padding: 0.1875rem;
+            border-color: gray;
+            border-radius: 0.375rem
+        }
+        .dataTables_info, .dataTables_paginate {
+            margin-top: 0.5rem;
+        }
+    </style>
 
     
     <body data-sidebar="dark">
@@ -201,7 +234,7 @@
                                     <span class="menu-item" data-key="t-ecommerce">Notaries</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" data-key="t-products">Notaries List</a></li>
+                                    <li><a href="{{route('getApprovedNotaries')}}" data-key="t-products">Notaries List</a></li>
                                     <li><a href="#" data-key="t-products">Pending Applications</a></li>
                                     <li><a href="#" data-key="t-products">Rejected Applications</a></li>
                                 </ul>
@@ -283,7 +316,27 @@
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->
-            @yield('content')
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="container-fluid">
+            
+                        @yield('content')
+                        <!-- end row -->
+                    </div>
+                    <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+            
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <script>document.write(new Date().getFullYear())</script> &copy;
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
             <!-- end main content-->
 
         </div>
@@ -300,6 +353,9 @@
         <script src="/assets/libs/metismenujs/metismenujs.min.js"></script>
         <script src="/assets/libs/simplebar/simplebar.min.js"></script>
         <script src="/assets/libs/eva-icons/eva.min.js"></script>
+
+        <script src="/assets/libs/gridjs/gridjs.umd.js"></script>
+        <script src="/assets/js/controllerData/adminNotaries.init.js"></script>
 
         <!-- apexcharts -->
         <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>

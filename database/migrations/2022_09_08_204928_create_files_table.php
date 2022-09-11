@@ -18,6 +18,7 @@ return new class extends Migration
             $table->uuid('owner');
             $table->string('filename');
             $table->string('file_path');
+            $table->string('file_number');
             $table->enum('file_type', \App\Models\File::TYPE);
             $table->timestamps();
         });

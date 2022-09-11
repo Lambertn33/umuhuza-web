@@ -19,7 +19,7 @@ class File_Confirmation_User extends Model
     const PENDING = self::STATUS[2];
 
     protected $fillable = [
-        'id','file_confirmation_id','names','telephone','national_id','status'
+        'id','file_confirmation_id','names','telephone','national_id','status','confirmation_code'
     ];
 
     protected $casts = [

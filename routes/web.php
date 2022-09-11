@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Administrator\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Administrator\NotariesController as AdminNotariesController;
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Notary\DashboardController as NotaryDashboardController;
+use App\Http\Controllers\Notary\FilesController as NotaryFilesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,11 +43,25 @@ Route::controller(AuthenticationController::class)->group(function () {
 // Administrator Routes
 Route::prefix('administration')->group(function (){
     Route::get('/', [AdminDashboardController::class,'getAdminDashboardOverview'])->name('getAdminDashboardOverview');
+    Route::controller(AdminNotariesController::class)->group(function() {
+        Route::prefix('notaries')->group(function (){
+            Route::get('/approved','getApprovedNotaries')->name('getApprovedNotaries');
+        });
+    });
 });
 
 //Notaries Routes
 Route::prefix('notary')->group(function (){
     Route::get('/', [NotaryDashboardController::class,'getNotaryDashboardOverview'])->name('getNotaryDashboardOverview');
+    Route::controller(NotaryFilesController::class)->group(function() {
+        Route::prefix('myfiles')->group(function() {
+            Route::get('/','myNotaryFiles')->name('myNotaryFiles');
+            Route::prefix('add')->group(function() {
+                Route::get('/','addNewNotaryFile')->name('addNewNotaryFile');
+                Route::post('/','saveNewNotaryFile')->name('saveNewNotaryFile');
+            });
+        });
+    });
 });
 
 // Clients Routes
