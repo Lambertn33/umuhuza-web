@@ -18,6 +18,8 @@
         <!-- Icons Css -->
         <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
+        <!-- choices css -->
+        <link href="/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css" />
         <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
     </head>
@@ -54,7 +56,7 @@
                         </button>
 
                         <div class="d-none d-sm-block ms-3 align-self-center">
-                            <h4 class="page-title">Dashboard</h4>
+                            @yield('title')
                         </div>
 
                     </div>
@@ -201,8 +203,8 @@
                                     <span class="menu-item" data-key="t-ecommerce">My Files</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" data-key="t-products">Files Uploaded</a></li>
-                                    <li><a href="#" data-key="t-products">Files Access Requests</a></li>
+                                    <li><a href="{{route('myClientFiles')}}" data-key="t-products">Files Uploaded</a></li>
+                                    <li><a href="#" data-key="t-products">Files Sent</a></li>
                                 </ul>
                             </li>
 
@@ -262,7 +264,28 @@
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->
-            @yield('content')
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="container-fluid">
+            
+                        @yield('content')
+                        <!-- end row -->
+                    </div>
+                    <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+            
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <script>document.write(new Date().getFullYear())</script> &copy;
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- end main content-->
             <!-- end main content-->
 
         </div>
@@ -279,6 +302,8 @@
         <script src="/assets/libs/metismenujs/metismenujs.min.js"></script>
         <script src="/assets/libs/simplebar/simplebar.min.js"></script>
         <script src="/assets/libs/eva-icons/eva.min.js"></script>
+        <script src="/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+        <script src="/assets/js/pages/form-advanced.init.js"></script>
 
         <!-- apexcharts -->
         <script src="/assets/libs/apexcharts/apexcharts.min.js"></script>

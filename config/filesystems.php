@@ -51,6 +51,11 @@ return [
             'root'   => env('APP_STORAGE', storage_path('app').'/notary_uploaded_files'),
         ],
 
+        'client_uploaded_files' => [
+            'driver' =>'local',
+            'root'   => env('APP_STORAGE', storage_path('app').'/client_uploaded_files'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

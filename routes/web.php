@@ -4,6 +4,7 @@ use App\Http\Controllers\Administrator\DashboardController as AdminDashboardCont
 use App\Http\Controllers\Administrator\NotariesController as AdminNotariesController;
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
+use App\Http\Controllers\Client\FilesController as ClientFilesCOntroller;
 use App\Http\Controllers\Notary\DashboardController as NotaryDashboardController;
 use App\Http\Controllers\Notary\FilesController as NotaryFilesController;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +74,15 @@ Route::prefix('notary')->group(function (){
 
 Route::prefix('client')->group(function (){
     Route::get('/',[ClientDashboardController::class,'getClientDashboardOverview'])->name('getClientDashboardOverview');
+    Route::controller(ClientFilesController::class)->group(function() {
+        Route::prefix('myFiles')->group(function (){
+            Route::get('/','myClientFiles')->name('myClientFiles');
+            Route::prefix('add')->group(function() {
+                Route::get('/','addNewClientFile')->name('addNewClientFile');
+                Route::post('/','saveNewClientFile')->name('saveNewClientFile');
+            });
+        });
+    });
 });
 
 
