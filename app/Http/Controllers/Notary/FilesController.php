@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Notary;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\Common\FileDownload;
 use App\Http\Services\Notary\CreateFileCode;
 use Illuminate\Http\Request;
 use App\Models\File;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Services\Common\FileStoring;
 use App\Http\Services\Notary\GenerateConfirmationCode;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class FilesController extends Controller
 {
@@ -50,8 +52,8 @@ class FilesController extends Controller
             $uploadedFile = '';
             $usersToConfirm = [];
             if ($request->hasFile('document')) {
-                // $uploadedFile = (new FileStoring)->storeFile($request, 'document', $notaryTelephone, 'notary_uploaded_files');
-                $uploadedFile = '12345';
+                $uploadedFile = (new FileStoring)->storeFile($request, 'document', $notaryTelephone, 'notary_uploaded_files');
+                //$uploadedFile = '12345';
             }
 
             $newFile = [
@@ -83,7 +85,6 @@ class FilesController extends Controller
                     'updated_at' => now(),
                 ];
             }
-            return $usersToConfirm;
             File::insert($newFile);
             File_Confirmation::insert($newFileConfirmation);
             foreach ($usersToConfirm as $user) {
@@ -91,11 +92,56 @@ class FilesController extends Controller
                 //TODO create Job to send SMS to users using telephone and confirmation code 
             }
             DB::commit();
-            return 'done';
+            return redirect()->route('getFileToConfirm',$newFileConfirmation['id']);
             
         } catch (\Throwable $th) {
             DB::rollback();
             return back()->withInput()->with('danger','an error occured...please try again');
         }
+    }
+
+    public function getFileToConfirm(Request $request, $id)
+    {
+        if (!File_Confirmation::find($id)) {
+            abort(404);
+        }
+        $fileConfirmation = File_Confirmation::find($id);
+        $users = $fileConfirmation->confirmation_users()->get();
+        $file = $fileConfirmation->file;
+        return view('notary.files.uploaded.usersConfirm', compact('fileConfirmation','users','file'));
+    }
+
+    public function confirmFileUsers(Request $request, $id)
+    {
+        if (!File_Confirmation::find($id)) {
+            abort(404);
+        }
+        $userIds = $request->userIds;
+        $confirmationCodes = $request->confirmationCodes;
+        for ($i=0; $i <count($userIds); $i++) { 
+            $checkConfirmationUser = File_Confirmation_User::find($userIds[$i]);
+            if ($checkConfirmationUser->confirmation_code !== $confirmationCodes[$i]) {
+                return back()->withInput()->with('error',"the confirmation code provided for ".$checkConfirmationUser->names." is incorrect");
+            } 
+        }
+        for ($i=0; $i <count($userIds); $i++) { 
+            $checkConfirmationUser = File_Confirmation_User::find($userIds[$i]);
+            try {
+                DB::beginTransaction();
+                $checkConfirmationUser->update([
+                    'status' => \App\Models\File_Confirmation_User::APPROVED
+                ]);
+                DB::commit();
+            } catch (\Throwable $th) {
+               DB::rollback();
+               return back()->withInput()->with('danger','an error occured...please try again');
+            }
+        }
+        return redirect()->route('myNotaryFiles')->with('success','File Confirmed and saved successfully');
+    }
+
+    public function downloadFile($file){
+        $fileToDownload = File::find($file);
+        return (new FileDownload)->downloadFile($fileToDownload);
     }
 }

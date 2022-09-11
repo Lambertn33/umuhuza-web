@@ -59,7 +59,12 @@ Route::prefix('notary')->group(function (){
             Route::prefix('add')->group(function() {
                 Route::get('/','addNewNotaryFile')->name('addNewNotaryFile');
                 Route::post('/','saveNewNotaryFile')->name('saveNewNotaryFile');
+                Route::prefix('/{fileId}/users_confirm')->group(function() {
+                    Route::get('/','getFileToConfirm')->name('getFileToConfirm');
+                    Route::put('/','confirmFileUsers')->name('confirmFileUsers');
+                });
             });
+            Route::get('/{file}/download','downloadFile')->name('downloadFile');
         });
     });
 });
