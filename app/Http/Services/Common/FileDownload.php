@@ -5,12 +5,12 @@
 
  class FileDownload {
     
-    public function downloadFile($file) {
-        if(!Storage::disk('notary_uploaded_files')->exists($file->file_path)){
+    public function downloadFile($file, $disk) {
+        if(!Storage::disk($disk)->exists($file->file_path)){
             abort(404);
         }else{
             $filename = Str::random(6);
-            $path = Storage::disk('notary_uploaded_files')->path($file->file_path);
+            $path = Storage::disk($disk)->path($file->file_path);
             $type = mime_content_type($path);
 
             $header = [

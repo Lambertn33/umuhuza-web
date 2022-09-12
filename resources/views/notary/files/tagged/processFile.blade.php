@@ -1,7 +1,7 @@
 @extends('notary.layouts')
 
 @section('title')
-<h4 class="page-title">New File</h4>
+<h4 class="page-title">File #{{$fileToProcess->file_number}}</h4>
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Upload New File</h4>
+                <h4 class="card-title">Proccess File</h4>
             </div>
             <div class="card-body">
                 @if (Session::has("error"))
@@ -19,21 +19,29 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
-                <form action="{{route('saveNewNotaryFile')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('processClientFile', $fileToProcess->id)}}" method="POST" enctype="multipart/form-data">
                     @csrf
                    <div class="row file-form">
-                     <div class="col-md-6 mb-3">
+                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="title" class="form-label">File title</label>
-                            <input type="text" class="form-control" value="{{old('title')}}" placeholder="Enter File Title" id="title" required name="title">
-                        </div>
-                        <div class="mb-3" style="display: flex;flex-direction:column">
-                            <label for="code" class="form-label">File Code (<b class="text-danger">auto-generated</b>)</label>
-                            <input type="text" class="form-control" value="{{$fileCode}}" id="code" readonly name="code">
+                            <input type="text" class="form-control" value="{{$fileToProcess->filename}}" readonly placeholder="Enter File Title" id="title" required name="title">
                         </div>
                         <div class="mb-3">
-                            <label for="file" class="form-label">File Document</label>
-                            <input type="file" class="form-control" required accept="application/pdf" name="document">
+                            <label for="code" class="form-label">File Code</label>
+                            <input type="text" class="form-control" value="{{$fileToProcess->file_number}}" id="code" readonly name="code">
+                        </div>
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Uploaded File Document</label>
+                            <a target="_blank" href="{{route('downloadClientFile',[$fileToProcess->id,'client_uploaded_files'])}}">
+                                <img src="/assets/images/file_image.png" width="10%" alt="">
+                            </a>
+                        </div>
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Uploaded National ID Document</label>
+                            <a target="_blank" href="{{route('downloadClientFile',[$fileToProcess->id,'client_photocopy_ids'])}}">
+                                <img src="/assets/images/file_image.png" width="10%" alt="">
+                            </a>
                         </div>
                         <div>
                             <button type="button" class="btn users-confirmation-addition btn-success w-md">Add Confirmation Users</button>

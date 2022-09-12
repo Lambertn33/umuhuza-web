@@ -3,12 +3,24 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\Notary\CreateFileCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notary;
+use App\Http\Services\Common\FileStoring;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use App\Models\File;
+use App\Models\File_Sending;
+use App\Http\Services\Common\FileDownload;
 
 class FilesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('clientMiddleware');
+    }
+    
     public function myClientFiles()
     {
         $authenticatedClient = Auth::user()->client;
@@ -24,6 +36,58 @@ class FilesController extends Controller
     }
     public function saveNewClientFile(Request $request)
     {
-        return $request->all();
+        try {
+            DB::beginTransaction();
+            $authenticatedClient = Auth::user()->client;
+            $title = $request->title;
+            $notaryId = $request->notary;
+            $notary = Notary::find($notaryId);
+            $code = (new CreateFileCode)->createFileCode($notary);
+            $uploadedDocumentFile = '';
+            $uploadedNationalIdFile = '';
+            if ($request->hasFile('document')) {
+                $uploadedDocumentFile = (new FileStoring)->storeFile($request, 'document', $notary->telephone, 'client_uploaded_files');
+            }
+            if ($request->hasFile('national_id_photocopy')) {
+                $uploadedNationalIdFile = (new FileStoring)->storeFile($request, 'national_id_photocopy', $authenticatedClient->telephone, 'client_photocopy_ids');
+            }
+            $newFile = [
+                'id' => Str::uuid()->toString(),
+                'owner' => $authenticatedClient->id,
+                'filename' => $title,
+                'file_path' => $uploadedDocumentFile,
+                'file_number' => $code,
+                'file_type' => \App\Models\File::CLIENT_UPLOAD,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+        
+            $newFileSending = [
+                'id' => Str::uuid()->toString(),
+                'file_id' => $newFile['id'],
+                'client_id' => $authenticatedClient->id,
+                'notary_id' => $notaryId,
+                'status' => \App\Models\File_Sending::PENDING,
+                'national_id_photocopy' => $uploadedNationalIdFile,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+            File::insert($newFile);
+            File_Sending::insert($newFileSending);
+            DB::commit();
+            //TODO send SMS to notary that he received a file
+            return redirect()->route('myClientFiles')->with('success','File sent to the selected notary successfully...');
+
+        } catch (\Throwable $th) {
+           DB::rollback();
+           return back()->withInput()->with('danger','an error occured...please try again');
+        }
+       
     }
+
+    public function downloadFile($file, $disk){
+        $fileToDownload = File::find($file);
+        return (new FileDownload)->downloadFile($fileToDownload, $disk);
+    }
+
 }

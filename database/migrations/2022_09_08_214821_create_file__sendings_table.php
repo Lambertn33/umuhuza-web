@@ -18,6 +18,7 @@ return new class extends Migration
             $table->uuid('file_id');
             $table->uuid('client_id');
             $table->uuid('notary_id');
+            $table->string('national_id_photocopy');
             $table->enum('status', \App\Models\File_Sending::STATUS)->default(\App\Models\File_Sending::PENDING);
             $table->timestamps();
         });

@@ -45,12 +45,17 @@
                                 <td>{{$item->file_number}}</td>
                                 <td>{{$item->confirmation->confirmation_users->count()}}</td>
                                 <td>
-                                    <a  href="{{route('downloadFile',$item->id)}}" target="_blank" class="btn btn-success btn-sm waves-effect waves-light">
-                                        View File
-                                    </a>
-                                    <button data-bs-toggle="modal" data-bs-target=".bs-{{$item->id}}" class="btn btn-primary btn-sm waves-effect waves-light">
-                                        View Confirmations
-                                    </button>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i data-eva="more-horizontal-outline" data-eva-width="20" data-eva-height="20"
+                                                class=""></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" target="_blank" href="{{$item->file_type == \App\Models\File::NOTARY_UPLOAD ? route('downloadFile',$item->id) : route('downloadClientFile',[$item->id,'client_uploaded_files'])}}">View Uploaded File</a></li>
+                                            <li><a data-bs-toggle="modal" data-bs-target=".bs-{{$item->id}}" class="dropdown-item" target="_blank">View Confirmed Users</a></li>
+                                        </ul>
+                                    </div>
                                     <!--  Large modal example -->
                                     <div class="modal fade bs-example-modal-lg bs-{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">

@@ -15,7 +15,14 @@ class File_Sending extends Model
     const RECEIVED = self::STATUS[1];
 
     protected $fillable = [
-        'id','client_id','notary_id','file_id','status'
+        'id','client_id','notary_id','file_id','status','national_id_photocopy'
+    ];
+
+    protected $casts = [
+        'id' => 'string',
+        'client_id' => 'string',
+        'notary_id' => 'string',
+        'file_id' => 'string'
     ];
 
     /**
@@ -36,5 +43,15 @@ class File_Sending extends Model
     public function receiver(): BelongsTo
     {
         return $this->belongsTo(Notary::class, 'notary_id', 'id');
+    }
+
+    /**
+     * Get the file that owns the File_Sending
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function file(): BelongsTo
+    {
+        return $this->belongsTo(File::class, 'file_id', 'id');
     }
 }

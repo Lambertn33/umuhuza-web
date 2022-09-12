@@ -37,6 +37,16 @@ class File extends Model
     }
 
     /**
+     * Get the sending associated with the File
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function sending(): HasOne
+    {
+        return $this->hasOne(File_Sending::class, 'file_id', 'id');
+    }
+
+    /**
      * Get all of the access_requests for the File
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

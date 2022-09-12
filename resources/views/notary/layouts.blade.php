@@ -230,7 +230,7 @@
                         <ul class="metismenu list-unstyled" id="side-menu">
                             <li class="menu-title" data-key="t-menu">Dashboard</li>
                             <li>
-                                <a href="#">
+                                <a href="{{route('getNotaryDashboardOverview')}}">
                                     <i class="icon nav-icon" data-eva="grid-outline"></i>
                                     <span class="menu-item" data-key="t-filemanager">System Overview</span>
                                 </a>
@@ -244,7 +244,7 @@
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{route('myNotaryFiles')}}" data-key="t-products">Uploaded Files</a></li>
-                                    <li><a href="#" data-key="t-products">Tagged Files</a></li>
+                                    <li><a href="{{route('myTaggedFiles')}}" data-key="t-products">Tagged Files</a></li>
                                     <li><a href="#" data-key="t-products">Files Access Requests</a></li>
                                 </ul>
                             </li>

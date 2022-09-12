@@ -67,6 +67,11 @@ Route::prefix('notary')->group(function (){
             });
             Route::get('/{file}/download','downloadFile')->name('downloadFile');
         });
+        Route::prefix('myTaggedFiles')->group(function() {
+            Route::get('/','myTaggedFiles')->name('myTaggedFiles');
+            Route::get('/{fileId}/getFileToProcess','getFileToProcess')->name('getFileToProcess');
+            Route::post('/{fileId}/processClientFile','processClientFile')->name('processClientFile');
+        });
     });
 });
 
@@ -81,6 +86,7 @@ Route::prefix('client')->group(function (){
                 Route::get('/','addNewClientFile')->name('addNewClientFile');
                 Route::post('/','saveNewClientFile')->name('saveNewClientFile');
             });
+            Route::get('/{file}/{disk}/download','downloadFile')->name('downloadClientFile');
         });
     });
 });

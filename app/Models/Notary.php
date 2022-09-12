@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\File;
+use Illuminate\Support\Facades\DB;
 
 class Notary extends Model
 {
@@ -41,8 +42,9 @@ class Notary extends Model
 
     public function myFiles()
     {
-        return File::where('owner',$this->id)->get();
+        return File::where('owner',$this->id)->get();        
     }
+
 
     /**
      * Get all of the receivedFiles for the Notary

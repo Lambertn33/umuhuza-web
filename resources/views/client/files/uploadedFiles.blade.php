@@ -1,4 +1,4 @@
-@extends('notary.layouts')
+@extends('client.layouts')
 
 @section('title')
 <h4 class="page-title">Uploaded Files</h4>
@@ -31,11 +31,44 @@
                                 <th>File title</th>
                                 <th>File number</th>
                                 <th>Tagged Notary</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            <?php $counter = 1 ?>
+                            @foreach ($myUploadedFiles as $file)
+                                <tr>
+                                    <th scope="row">{{$counter}}</th>
+                                     <?php $counter++ ?>
+                                     <td>{{$file->filename}}</td>
+                                     <td>{{$file->file_number}}</td>
+                                     <td>{{$file->sending->receiver->user->names}}</td>
+                                     <td>
+                                        @if ($file->sending->status == \App\Models\File_Sending::PENDING)
+                                            <span class="badge badge-pill badge-soft-danger font-size-12">Pending</span>
+                                        @else
+                                        <span class="badge badge-pill badge-soft-success font-size-12">Processed</span>
+                                        @endif
+                                     </td>
+                                     <td>
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle" href="#" role="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i data-eva="more-horizontal-outline" data-eva-width="20" data-eva-height="20"
+                                                    class=""></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li><a class="dropdown-item" target="_blank" href="{{route('downloadClientFile',[$file->id,'client_uploaded_files'])}}">View Uploaded File</a></li>
+                                                <li><a class="dropdown-item" target="_blank" href="{{route('downloadClientFile',[$file->id, 'client_photocopy_ids'])}}">View Uploaded National ID</a></li>
+                                                @if (($file->sending->status == \App\Models\File_Sending::PENDING))
+                                                <li><a class="dropdown-item" target="_blank" href="">Delete File</a></li>
+                                                @endif
+                                            </ul>
+                                        </div>
+                                     </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

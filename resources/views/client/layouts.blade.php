@@ -24,7 +24,36 @@
 
     </head>
 
-    
+    <style>
+        table.datatable.no-footer {
+            border: none;
+        }
+        table.datatable thead th, table.datatable thead td {
+            
+        }
+        table.datatable thead th {
+            font-weight: 600;
+            border: none;
+            font-size: 14px;
+        }
+        table.datatable tbody th{
+            padding: 0.75rem 0.625rem;
+            border: none;
+        }
+        table.datatable tbody td {
+            padding: 1rem 0.625rem;
+            border: none;
+            font-size: 0.875rem
+        }
+        .dataTables_length select {
+            padding: 0.1875rem;
+            border-color: gray;
+            border-radius: 0.375rem
+        }
+        .dataTables_info, .dataTables_paginate {
+            margin-top: 0.5rem;
+        }
+    </style>
     <body data-sidebar="dark">
 
     <!-- <body data-layout="horizontal"> -->
@@ -190,7 +219,7 @@
                         <ul class="metismenu list-unstyled" id="side-menu">
                             <li class="menu-title" data-key="t-menu">Dashboard</li>
                             <li>
-                                <a href="#">
+                                <a href="{{route('getClientDashboardOverview')}}">
                                     <i class="icon nav-icon" data-eva="grid-outline"></i>
                                     <span class="menu-item" data-key="t-filemanager">System Overview</span>
                                 </a>
@@ -204,7 +233,6 @@
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{route('myClientFiles')}}" data-key="t-products">Files Uploaded</a></li>
-                                    <li><a href="#" data-key="t-products">Files Sent</a></li>
                                 </ul>
                             </li>
 

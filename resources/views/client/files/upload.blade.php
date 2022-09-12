@@ -15,7 +15,7 @@
                 @if (Session::has("error"))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="mdi mdi-block-helper me-2"></i>
-                    A simple danger alert—check it out!
+                     <b>{{Session::get('error')}}</b>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
@@ -32,13 +32,17 @@
                             <input type="file" class="form-control" required accept="application/pdf" name="document">
                         </div>
                         <div class="mb-3">
+                            <label for="file" class="form-label">National ID Photocopy</label>
+                            <input type="file" class="form-control" required accept="application/pdf" name="national_id_photocopy">
+                        </div>
+                        <div class="mb-3">
                             <label for="client-select-notary" class="form-label">Select Notary to Tag</label>
                             <select class="form-control" data-trigger name="notary"
                                 id="client-select-notary"
                                 placeholder="This is a search placeholder" required>
                                 <option selected disabled>Select Notary</option>
                                 @foreach ($allApprovedNotaries as $notary)
-                                <option value="{{$notary->id}}">{{$notary->user->names}} - {{$notary->district}}</option>
+                                <option value="{{$notary->id}}">{{$notary->user->names}} - {{$notary->district}} - {{$notary->cell}}</option>
                                 @endforeach
                             </select>
                         </div>
