@@ -86,7 +86,10 @@ Route::prefix('client')->group(function (){
                 Route::get('/','addNewClientFile')->name('addNewClientFile');
                 Route::post('/','saveNewClientFile')->name('saveNewClientFile');
             });
-            Route::get('/{file}/{disk}/download','downloadFile')->name('downloadClientFile');
+            Route::prefix('/{file}')->group(function() {
+                Route::delete('/','deletePendingFile')->name('deletePendingFile');
+                Route::get('/{disk}/download','downloadFile')->name('downloadClientFile');
+            });
         });
     });
 });

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\File;
 use App\Models\File_Sending;
 use App\Http\Services\Common\FileDownload;
+use Illuminate\Support\Facades\Storage;
 
 class FilesController extends Controller
 {
@@ -83,6 +84,28 @@ class FilesController extends Controller
            return back()->withInput()->with('danger','an error occured...please try again');
         }
        
+    }
+
+    public function deletePendingFile($file){
+       try {
+        DB::beginTransaction();
+        $pendingFileToDelete = File::find($file);
+        $filePath = $pendingFileToDelete->file_path;
+        $nationalIdPath =  $pendingFileToDelete->sending->national_id_photocopy;
+        if (Storage::disk('client_uploaded_files')->exists($filePath)) {
+            Storage::disk('client_uploaded_files')->delete($filePath);
+        }
+        if (Storage::disk('client_photocopy_ids')->exists($nationalIdPath)) {
+            Storage::disk('client_photocopy_ids')->delete($nationalIdPath);
+        }
+        $pendingFileToDelete->sending->delete();
+        $pendingFileToDelete->delete();
+        DB::commit();
+        return back()->with('success','Pending File Deleted Successfully');
+       } catch (\Throwable $th) {
+          DB::rollback();
+          return back()->with('danger','an error occured...please try again');
+       }
     }
 
     public function downloadFile($file, $disk){

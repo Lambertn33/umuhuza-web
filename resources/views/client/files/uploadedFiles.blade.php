@@ -37,38 +37,45 @@
                         </thead>
                         <tbody>
                             <?php $counter = 1 ?>
+                            @if ($myUploadedFiles->count() > 0)
                             @foreach ($myUploadedFiles as $file)
-                                <tr>
-                                    <th scope="row">{{$counter}}</th>
-                                     <?php $counter++ ?>
-                                     <td>{{$file->filename}}</td>
-                                     <td>{{$file->file_number}}</td>
-                                     <td>{{$file->sending->receiver->user->names}}</td>
-                                     <td>
-                                        @if ($file->sending->status == \App\Models\File_Sending::PENDING)
-                                            <span class="badge badge-pill badge-soft-danger font-size-12">Pending</span>
-                                        @else
-                                        <span class="badge badge-pill badge-soft-success font-size-12">Processed</span>
-                                        @endif
-                                     </td>
-                                     <td>
-                                        <div class="dropdown">
-                                            <a class="dropdown-toggle" href="#" role="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i data-eva="more-horizontal-outline" data-eva-width="20" data-eva-height="20"
-                                                    class=""></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" target="_blank" href="{{route('downloadClientFile',[$file->id,'client_uploaded_files'])}}">View Uploaded File</a></li>
-                                                <li><a class="dropdown-item" target="_blank" href="{{route('downloadClientFile',[$file->id, 'client_photocopy_ids'])}}">View Uploaded National ID</a></li>
-                                                @if (($file->sending->status == \App\Models\File_Sending::PENDING))
-                                                <li><a class="dropdown-item" target="_blank" href="">Delete File</a></li>
-                                                @endif
-                                            </ul>
-                                        </div>
-                                     </td>
-                                </tr>
-                            @endforeach
+                            <tr>
+                                <th scope="row">{{$counter}}</th>
+                                 <?php $counter++ ?>
+                                 <td>{{$file->filename}}</td>
+                                 <td>{{$file->file_number}}</td>
+                                 <td>{{$file->sending->receiver->user->names}}</td>
+                                 <td>
+                                    @if ($file->sending->status == \App\Models\File_Sending::PENDING)
+                                        <span class="badge badge-pill badge-soft-danger font-size-12">Pending</span>
+                                    @else
+                                    <span class="badge badge-pill badge-soft-success font-size-12">Processed</span>
+                                    @endif
+                                 </td>
+                                 <td>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i data-eva="more-horizontal-outline" data-eva-width="20" data-eva-height="20"
+                                                class=""></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" target="_blank" href="{{route('downloadClientFile',[$file->id,'client_uploaded_files'])}}">View Uploaded File</a></li>
+                                            <li><a class="dropdown-item" target="_blank" href="{{route('downloadClientFile',[$file->id, 'client_photocopy_ids'])}}">View Uploaded National ID</a></li>
+                                            @if (($file->sending->status == \App\Models\File_Sending::PENDING))
+                                            <li><a class="dropdown-item" href="#" onclick="document.getElementById('{{$file->id}}-delete').submit();">Delete File</a>
+                                                <form action="{{route('deletePendingFile', $file->id)}}" method="POST" id="{{$file->id}}-delete" style="display: none">
+                                                    @csrf
+                                                    @method('delete')
+                                                </form>
+                                            </li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                 </td>
+                            </tr>
+                             @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
