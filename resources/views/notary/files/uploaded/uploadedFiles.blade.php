@@ -53,7 +53,7 @@
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-end">
                                             <li><a class="dropdown-item" target="_blank" href="{{$item->file_type == \App\Models\File::NOTARY_UPLOAD ? route('downloadFile',$item->id) : route('downloadClientFile',[$item->id,'client_uploaded_files'])}}">View Uploaded File</a></li>
-                                            <li><a data-bs-toggle="modal" data-bs-target=".bs-{{$item->id}}" class="dropdown-item" target="_blank">View Confirmed Users</a></li>
+                                            <li><a data-bs-toggle="modal" href="#" data-bs-target=".bs-{{$item->id}}" class="dropdown-item">View Confirmed Users</a></li>
                                         </ul>
                                     </div>
                                     <!--  Large modal example -->
@@ -67,10 +67,12 @@
                                                 <div class="modal-body">
                                                     <?php $count = 1 ?>
                                                     <ul class="list-group list-group-flush">
-                                                        @foreach ($item->confirmation->confirmation_users as $user)
-                                                            <li class="list-group-item">#{{$count}}- Names: <b>{{$user->names}}</b>   -Telephone: <b>{{$user->telephone}}</b>   -National ID: <b>{{$user->national_id}}</b></li>
-                                                            <?php $count++ ?>
-                                                        @endforeach
+                                                        @if ($item->confirmation)
+                                                            @foreach ($item->confirmation->confirmation_users as $user)
+                                                                <li class="list-group-item">#{{$count}}- Names: <b>{{$user->names}}</b>   -Telephone: <b>{{$user->telephone}}</b>   -National ID: <b>{{$user->national_id}}</b></li>
+                                                                <?php $count++ ?>
+                                                            @endforeach
+                                                        @endif
                                                     </ul>
                                                 </div>
                                             </div><!-- /.modal-content -->

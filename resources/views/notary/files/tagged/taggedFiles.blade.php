@@ -70,9 +70,32 @@
                                             <li><a class="dropdown-item" target="_blank" href="{{route('downloadClientFile',[$item->file->id, 'client_photocopy_ids'])}}">View Uploaded National ID</a></li>
                                             @if (($item->file->sending->status == \App\Models\File_Sending::PENDING))
                                                 <li><a class="dropdown-item" href="{{route('getFileToProcess',$item->file->id)}}">Process File</a></li>
+                                            @else
+                                                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target=".bs-{{$item->file->id}}">View Confirmed Users</a></li>
                                             @endif
                                         </ul>
                                     </div>
+                                    <div class="modal fade bs-example-modal-lg bs-{{$item->file->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="myLargeModalLabel">Confirmation Users for file #{{$item->file->file_number}}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <?php $count = 1 ?>
+                                                    <ul class="list-group list-group-flush">
+                                                        @if ($item->file->confirmation)
+                                                            @foreach ($item->file->confirmation->confirmation_users as $user)
+                                                                <li class="list-group-item">#{{$count}}- Names: <b>{{$user->names}}</b>   -Telephone: <b>{{$user->telephone}}</b>   -National ID: <b>{{$user->national_id}}</b></li>
+                                                                <?php $count++ ?>
+                                                            @endforeach
+                                                        @endif
+                                                    </ul>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
                                 </td>
                             </tr>
                             @endforeach

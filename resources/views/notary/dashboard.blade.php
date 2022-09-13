@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                             <div class="flex-grow-1">
-                                <p class="text-muted mb-1">Total Uploaded Files</p>
+                                <p class="text-muted mb-1">Processed Uploaded Files</p>
                                 <h4 class="mb-0">{{$myTotalFiles}}</h4>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <div class="flex-grow-1">
-                                <p class="text-muted mb-1">Total Processed Files</p>
+                                <p class="text-muted mb-1">Processed Tagged Files</p>
                                 <h4 class="mb-0">{{$myTotalProcessedFiles}}</h4>
                             </div>
                         </div>

@@ -25,6 +25,6 @@ class NotaryFilesChart
         $myTotalUnreadTaggedFiles = File_Sending::where('notary_id', $authenticatedNotary->id)->where('status', \App\Models\File_Sending::PENDING)->count();
         return $this->chart->pieChart()
             ->addData([$myTotalUploadedFiles, $myTotalTaggedFiles, $myTotalReadTaggedFiles, $myTotalUnreadTaggedFiles])
-            ->setLabels(['Total Uploaded Files', 'Total Tagged Files', 'Total Tagged Read Files','Total Tagged Unread Files']);
+            ->setLabels(['Total Processed Uploaded Files', 'Total Tagged Files', 'Total Processed Tagged Files','Total Unprocessed Tagged Files']);
     }
 }
