@@ -59,7 +59,7 @@
                                         <li><a class="dropdown-item" href="#" onclick="document.getElementById('{{$item->id}}-update').submit();">
                                          {{$item->user->is_active? "Close Account": "Re-Activate Account"}}
                                         </a>
-                                            <form action="{{route('changeAccountStatus', $item->id)}}" method="POST" id="{{$item->id}}-update" style="display: none">
+                                            <form action="{{route('changeClientAccountStatus', $item->id)}}" method="POST" id="{{$item->id}}-update" style="display: none">
                                                 @csrf
                                                 @method('put')
                                             </form>

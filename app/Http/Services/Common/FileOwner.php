@@ -1,8 +1,5 @@
 <?php 
  namespace App\Http\Services\Common;
- use Illuminate\Support\Str;
- use Illuminate\Support\Facades\Storage;
- use setasign\Fpdi\Fpdi;
  use App\Models\Client;
  use App\Models\Notary;
 

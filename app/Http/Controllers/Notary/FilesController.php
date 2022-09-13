@@ -23,7 +23,7 @@ class FilesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['notaryMiddleware','auth.session']);
+        $this->middleware(['notaryMiddleware','auth.session'])->except('downloadFile');;
     }
 
     public function myNotaryFiles()

@@ -46,7 +46,7 @@
     {
         $date = $file->confirmation->created_at->format('Y-m-d');
         $pdf = new Fpdi();
-        $text = 'Notarized by '. $notary->user->names.' with code '. $file->file_number .' on '. $date .'';
+        $text = 'Notarized by '. $notary->user->names.' with code '. $notary->notary_code .' on '. $date .'';
         $pages_count = $pdf->setSourceFile($path);
         for ($i = 1; $i <= $pages_count; $i ++) {
             $pdf->AddPage();

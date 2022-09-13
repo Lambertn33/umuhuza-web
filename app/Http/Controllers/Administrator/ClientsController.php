@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\Common\AccountStatus;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use Illuminate\Support\Facades\DB;
@@ -26,20 +27,7 @@ class ClientsController extends Controller
         try {
             $client = Client::find($clientId);
             $user = $client->user;
-            DB::beginTransaction();
-            if ($user->is_active) {
-                $user->update([
-                    'is_active' => false
-                ]);
-                DB::commit();
-                return back()->with('success','client account closed successfully');
-            } else {
-                $user->update([
-                    'is_active' => true
-                ]);
-                DB::commit();
-                return back()->with('success','client account re-activated successfully');
-            }
+            return (new AccountStatus)->changeAccountStatus($user);
         } catch (\Throwable $th) {
             DB::rollback();
             return back()->withInput()->with('error','an error occured..please try again');

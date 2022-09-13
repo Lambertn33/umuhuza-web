@@ -49,6 +49,10 @@ Route::prefix('administration')->group(function (){
     Route::controller(AdminNotariesController::class)->group(function() {
         Route::prefix('notaries')->group(function (){
             Route::get('/approved','getApprovedNotaries')->name('getApprovedNotaries');
+            Route::prefix('/{notaryId}')->group(function (){
+                Route::put('changeAccountStatus', 'changeAccountStatus')->name('changeNotaryAccountStatus');
+                Route::get('/viewFiles', 'getNotaryFiles')->name('getNotaryFiles');
+            });
         });
     });
     //Clients
@@ -56,7 +60,7 @@ Route::prefix('administration')->group(function (){
         Route::prefix('clients')->group(function() {
             Route::get('/','getAllClients')->name('getAllClients');
             Route::prefix('/{clientId}')->group(function() {
-                Route::put('changeAccountStatus', 'changeAccountStatus')->name('changeAccountStatus');
+                Route::put('changeAccountStatus', 'changeAccountStatus')->name('changeClientAccountStatus');
                 Route::get('/viewFiles', 'getClientFiles')->name('getClientFiles');
             });
         });
