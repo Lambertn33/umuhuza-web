@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('notaryMiddleware');
+        $this->middleware(['notaryMiddleware','auth.session']);
     }
 
     public function getNotaryDashboardOverview(NotaryFilesChart $chart)

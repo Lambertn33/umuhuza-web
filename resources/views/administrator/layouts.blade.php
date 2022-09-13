@@ -87,7 +87,7 @@
                         </button>
 
                         <div class="d-none d-sm-block ms-3 align-self-center">
-                            <h4 class="page-title">Dashboard</h4>
+                           @yield('title')
                         </div>
 
                     </div>
@@ -221,7 +221,7 @@
                         <ul class="metismenu list-unstyled" id="side-menu">
                             <li class="menu-title" data-key="t-menu">Dashboard</li>
                             <li>
-                                <a href="#">
+                                <a href="{{route('getAdminDashboardOverview')}}">
                                     <i class="icon nav-icon" data-eva="grid-outline"></i>
                                     <span class="menu-item" data-key="t-filemanager">System Overview</span>
                                 </a>
@@ -245,7 +245,7 @@
                                     <span class="menu-item" data-key="t-ecommerce">Clients</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" data-key="t-products">Clients List</a></li>
+                                    <li><a href="{{route('getAllClients')}}" data-key="t-products">Clients List</a></li>
                                 </ul>
                             </li>
                             <li>

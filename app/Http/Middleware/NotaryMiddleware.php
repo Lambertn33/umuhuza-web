@@ -19,8 +19,17 @@ class NotaryMiddleware
     public function handle(Request $request, Closure $next)
     {
         $notaryRole = Role::where('type', \App\Models\Role::NOTARY)->first();
-        if (Auth::check() && Auth::user()->role_id == $notaryRole->id) {
-            return $next($request);
+        if (Auth::check()) {
+            if (Auth::user()->role_id == $notaryRole->id) {
+                if (Auth::user()->is_active) {
+                    return $next($request);
+                } else {
+                   Auth::logout();
+                   return redirect()->route('getLoginPage')->with('error','Your account is locked.. please contact the system administrator');
+                }
+            } else {
+                return back();
+            }
         } else {
             return back();
         }

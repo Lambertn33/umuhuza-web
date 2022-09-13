@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('clientMiddleware');
+        $this->middleware(['clientMiddleware','auth.session']);
     }
 
     public function getClientDashboardOverview(ClientFilesChart $chart)

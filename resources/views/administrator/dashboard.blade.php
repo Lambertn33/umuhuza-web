@@ -1,5 +1,9 @@
 @extends('administrator.layouts')
 
+@section('title')
+<h4 class="page-title">Dashboard</h4>
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-xxl-12">

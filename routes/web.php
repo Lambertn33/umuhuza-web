@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Administrator\ClientsController as AdminClientsController;
 use App\Http\Controllers\Administrator\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Administrator\NotariesController as AdminNotariesController;
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
-use App\Http\Controllers\Client\FilesController as ClientFilesCOntroller;
+use App\Http\Controllers\Client\FilesController as ClientFilesController;
 use App\Http\Controllers\Notary\DashboardController as NotaryDashboardController;
 use App\Http\Controllers\Notary\FilesController as NotaryFilesController;
 use Illuminate\Support\Facades\Route;
@@ -44,9 +45,19 @@ Route::controller(AuthenticationController::class)->group(function () {
 // Administrator Routes
 Route::prefix('administration')->group(function (){
     Route::get('/', [AdminDashboardController::class,'getAdminDashboardOverview'])->name('getAdminDashboardOverview');
+    //Notaries
     Route::controller(AdminNotariesController::class)->group(function() {
         Route::prefix('notaries')->group(function (){
             Route::get('/approved','getApprovedNotaries')->name('getApprovedNotaries');
+        });
+    });
+    //Clients
+    Route::controller(AdminClientsController::class)->group(function() {
+        Route::prefix('clients')->group(function() {
+            Route::get('/','getAllClients')->name('getAllClients');
+            Route::prefix('/{clientId}')->group(function() {
+                Route::put('changeAccountStatus', 'changeAccountStatus')->name('changeAccountStatus');
+            });
         });
     });
 });

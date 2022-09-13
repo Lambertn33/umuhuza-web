@@ -19,7 +19,7 @@ class FilesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('clientMiddleware')->except('downloadFile');
+        $this->middleware(['clientMiddleware','auth.session'])->except('downloadFile');
     }
     
     public function myClientFiles()
