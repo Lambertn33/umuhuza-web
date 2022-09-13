@@ -55,7 +55,7 @@
                                             class=""></i>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item"  href="">View Uploaded Files</a></li>
+                                        <li><a class="dropdown-item"  href="{{route('getClientFiles', $item->id)}}">View Uploaded Files</a></li>
                                         <li><a class="dropdown-item" href="#" onclick="document.getElementById('{{$item->id}}-update').submit();">
                                          {{$item->user->is_active? "Close Account": "Re-Activate Account"}}
                                         </a>

@@ -57,6 +57,7 @@ Route::prefix('administration')->group(function (){
             Route::get('/','getAllClients')->name('getAllClients');
             Route::prefix('/{clientId}')->group(function() {
                 Route::put('changeAccountStatus', 'changeAccountStatus')->name('changeAccountStatus');
+                Route::get('/viewFiles', 'getClientFiles')->name('getClientFiles');
             });
         });
     });

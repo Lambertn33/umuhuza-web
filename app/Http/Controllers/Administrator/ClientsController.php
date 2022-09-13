@@ -24,26 +24,32 @@ class ClientsController extends Controller
     public function changeAccountStatus($clientId)
     {
         try {
-            DB::beginTransaction();
             $client = Client::find($clientId);
             $user = $client->user;
+            DB::beginTransaction();
             if ($user->is_active) {
                 $user->update([
                     'is_active' => false
                 ]);
-                //TODO logout user on other devices
-
                 DB::commit();
-                return back()->with('success','user account closed successfully');
+                return back()->with('success','client account closed successfully');
             } else {
                 $user->update([
                     'is_active' => true
                 ]);
                 DB::commit();
-                return back()->with('success','user account re-activated successfully');
+                return back()->with('success','client account re-activated successfully');
             }
         } catch (\Throwable $th) {
-            throw $th;
+            DB::rollback();
+            return back()->withInput()->with('error','an error occured..please try again');
         }
+    }
+
+    public function getClientFiles($clientId)
+    {
+        $client = Client::find($clientId);
+        $clientFiles =  $client->sentFiles()->get();
+         return view('administrator.clients.files', compact('client','clientFiles'));
     }
 }

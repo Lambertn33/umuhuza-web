@@ -8,8 +8,11 @@
 <div class="row">
     <div class="col-xl-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="display: flex;justify-content:space-between;align-items:center">
                 <h4 class="card-title">Upload New File</h4>
+                <a href="{{route('myNotaryFiles')}}" class="btn btn-success waves-effect waves-light" style="display: flex;align-items:center;">
+                     Back to Uploaded Files
+                </a>
             </div>
             <div class="card-body">
                 @if (Session::has("error"))

@@ -248,18 +248,6 @@
                                     <li><a href="{{route('getAllClients')}}" data-key="t-products">Clients List</a></li>
                                 </ul>
                             </li>
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                    <i class="icon nav-icon" data-eva="file-outline"></i>
-                                    <span class="menu-item" data-key="t-ecommerce">Files</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" data-key="t-products">Files Shares</a></li>
-                                    <li><a href="#" data-key="t-products">Files Access Requests</a></li>
-                                    <li><a href="#" data-key="t-products">Files Confirmation</a></li>
-                                </ul>
-                            </li>
-
                         </ul>
                         
                     </div>

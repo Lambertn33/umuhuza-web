@@ -8,8 +8,9 @@
 <div class="row">
     <div class="col-xl-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="display: flex;justify-content:space-between;align-items:center">
                 <h4 class="card-title">Upload New File</h4>
+                <a href="{{route('myClientFiles')}}" class="btn btn-success">Back To Files Page</a>
             </div>
             <div class="card-body">
                 @if (Session::has("error"))

@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-xl-12">
         <div class="card">
-            <div class="card-header" style="display: flex;justify-content:space-between;">
+            <div class="card-header" style="display: flex;justify-content:space-between;align-items:center">
                 <h4 class="card-title">Files</h4>
                 <a href="{{route('addNewNotaryFile')}}" class="btn btn-primary waves-effect waves-light" style="display: flex;align-items:center;">
                     <i class="bx bx-plus font-size-16 align-middle me-2"></i> Upload New File
@@ -43,7 +43,7 @@
                                 <?php $counter++ ?>
                                 <td>{{$item->filename}}</td>
                                 <td>{{$item->file_number}}</td>
-                                <td>{{$item->confirmation->confirmation_users->count()}}</td>
+                                <td>{{$item->confirmation ? $item->confirmation->confirmation_users->count() : 0}}</td>
                                 <td>
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button"

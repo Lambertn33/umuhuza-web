@@ -153,7 +153,7 @@ class AuthenticationController extends Controller
             
         } catch (\Throwable $th) {
             DB::rollback();
-            throw $th;
+            return back()->withInput()->with('error','an error occured..please try again');
         }
     }
 
