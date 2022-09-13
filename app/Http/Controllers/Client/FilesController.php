@@ -18,7 +18,7 @@ class FilesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('clientMiddleware');
+        $this->middleware('clientMiddleware')->except('downloadFile');
     }
     
     public function myClientFiles()

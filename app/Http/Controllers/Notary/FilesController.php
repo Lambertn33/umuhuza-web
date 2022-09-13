@@ -216,10 +216,12 @@ class FilesController extends Controller
                return back()->withInput()->with('danger','an error occured...please try again');
             }
         }
-        $fileToUpdate = $fileConfirmation->file->sending;
-        $fileToUpdate->update([
-            'status' => \App\Models\File_Sending::RECEIVED
-        ]);
+       if ($fileConfirmation->file->file_type == \App\Models\File::CLIENT_UPLOAD) {
+            $fileToUpdate = $fileConfirmation->file->sending;
+            $fileToUpdate->update([
+                'status' => \App\Models\File_Sending::RECEIVED
+            ]);
+       }
        if ($fileConfirmation->file->file_type == \App\Models\File::NOTARY_UPLOAD) {
            return redirect()->route('myNotaryFiles')->with('success','Uploaded file Confirmed and saved successfully');
         } else {

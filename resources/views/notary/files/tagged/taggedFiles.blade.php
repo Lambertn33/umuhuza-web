@@ -69,7 +69,7 @@
                                             <li><a class="dropdown-item" target="_blank" href="{{route('downloadClientFile',[$item->file->id,'client_uploaded_files'])}}">View Uploaded File</a></li>
                                             <li><a class="dropdown-item" target="_blank" href="{{route('downloadClientFile',[$item->file->id, 'client_photocopy_ids'])}}">View Uploaded National ID</a></li>
                                             @if (($item->file->sending->status == \App\Models\File_Sending::PENDING))
-                                                <li><a class="dropdown-item" target="_blank" href="">Delete File</a></li>
+                                                <li><a class="dropdown-item" href="{{route('getFileToProcess',$item->file->id)}}">Process File</a></li>
                                             @endif
                                         </ul>
                                     </div>
