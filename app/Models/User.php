@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -77,6 +78,16 @@ class User extends Authenticatable
     public function client(): HasOne
     {
         return $this->hasOne(Client::class, 'user_id', 'id');
+    }
+
+    /**
+     * Get all of the password_recovers for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function password_recovers(): HasMany
+    {
+        return $this->hasMany(Password_Recover::class, 'user_id', 'id');
     }
 
 }

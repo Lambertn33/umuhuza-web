@@ -23,6 +23,9 @@ class AuthenticationController extends Controller
         if ($request->session()->has('registrationData')) {
             $request->session()->forget('registrationData');
         }
+        if ($request->session()->has('currentUser')) {
+            $request->session()->forget('currentUser');
+        }
         return view('auth.login');
     }
 

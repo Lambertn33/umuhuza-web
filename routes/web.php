@@ -4,6 +4,7 @@ use App\Http\Controllers\Administrator\ClientsController as AdminClientsControll
 use App\Http\Controllers\Administrator\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Administrator\NotariesController as AdminNotariesController;
 use App\Http\Controllers\Auth\AuthenticationController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Client\FilesController as ClientFilesController;
 use App\Http\Controllers\Notary\DashboardController as NotaryDashboardController;
@@ -40,6 +41,22 @@ Route::controller(AuthenticationController::class)->group(function () {
     });
 
     Route::post('/logout','logout')->name('logout');
+});
+
+Route::controller(PasswordResetController::class)->group(function() {
+    Route::prefix('/password_reset')->group(function() {
+        Route::get('/','getPasswordRecoverPage')->name('getPasswordRecoverPage');
+        Route::post('/','providePhoneForPasswordReset')->name('providePhoneForPasswordReset');
+        Route::prefix('code')->group(function() {
+            Route::get('/','getCodeRecoverPage')->name('getCodeRecoverPage');
+            Route::post('/','provideCodeForPasswordReset')->name('provideCodeForPasswordReset');
+            
+            Route::prefix('new-password')->group(function() {
+                Route::get('/','getNewPasswordRecoverPage')->name('getNewPasswordRecoverPage');
+                Route::post('/','provideNewPasswordForPasswordReset')->name('provideNewPasswordForPasswordReset');
+            });
+        });
+    });
 });
 
 // Administrator Routes

@@ -17,8 +17,8 @@
                                     </div>
                                     <div class="auth-content my-auto">
                                         <div class="text-center">
-                                            <h5 class="mb-0">Welcome Back !</h5>
-                                            <p class="text-muted mt-2">Sign in to continue</p>
+                                            <h5 class="mb-0">Password Recover !</h5>
+                                            <p class="text-muted mt-2">Enter New Password</p>
                                         </div>
                                         @if (Session::has('error'))
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -31,16 +31,8 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                         </div> 
                                         @endif
-                                        <form class="mt-4 pt-2" action="{{route('authenticate')}}" method="POST">
-                                            @csrf
-                                            <div class="form-floating form-floating-custom mb-4">
-                                                <input type="text" class="form-control" id="input-username" name="username" value="{{old('username')}}" placeholder="Enter Telephone or Email">
-                                                <label for="input-username">Email/Telephone</label>
-                                                <div class="form-floating-icon">
-                                                    <i data-eva="people-outline"></i>
-                                                </div>
-                                            </div>
-    
+                                        <form class="mt-4 pt-2" action="{{route('provideNewPasswordForPasswordReset')}}" method="POST">
+                                            @csrf    
                                             <div class="form-floating form-floating-custom mb-4 auth-pass-inputgroup">
                                                 <input type="password" class="form-control pe-5" name="password" value="{{old('password')}}" id="password-input" placeholder="Enter Password">
                                                 
@@ -52,17 +44,23 @@
                                                     <i data-eva="lock-outline"></i>
                                                 </div>
                                             </div>
+                                            <div class="form-floating form-floating-custom mb-4 auth-pass-inputgroup">
+                                                <input type="password" class="form-control pe-5" name="password_confirm" value="{{old('password_confirm')}}" id="password-confirm-input" placeholder="Enter Password">
+                                                
+                                                <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-confirm-addon">
+                                                    <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
+                                                </button>
+                                                <label for="input-password">Confirm Password</label>
+                                                <div class="form-floating-icon">
+                                                    <i data-eva="lock-outline"></i>
+                                                </div>
+                                            </div>
                                             <div class="mb-3">
-                                                <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
+                                                <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Reset Password</button>
                                             </div>
                                         </form>                        
-                                        <div class="mt-4 pt-3 text-center">
-                                            <p class="text-muted mb-0">Don't have an account ? <a href="{{route('getRegistrationPage')}}"
-                                                class="text-primary fw-semibold"> Signup now </a> </p>
-                                        </div>
-                                        <div class="mt-0 pt-3 text-center">
-                                            <p class="text-muted mb-0">Forgot Your Password ? <a href="{{route('getPasswordRecoverPage')}}"
-                                                class="text-primary fw-semibold"> Click here</a> </p>
+                                        <div class="mt-2 pt-2 text-center">
+                                            <p class="text-muted mb-0">Already have an account ? <a href="{{route('getLoginPage')}}" class="text-primary fw-semibold"> Login </a> </p>
                                         </div>
                                     </div>
                                     <div class="mt-4 text-center">
