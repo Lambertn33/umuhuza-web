@@ -109,15 +109,15 @@ class PasswordResetController extends Controller
             return back()->withInput()->with('error','password confirmation do not match');
         } else {
            try {
-            DB::beginTransaction();
-            $userTuUpdatePassword = User::find($currentUser->id);
-            $userTuUpdatePassword->update([
-                'password' => Hash::make($password)
-            ]);
-            Password_Recover::where('user_id', $currentUser->id)->delete();
-            $request->session()->forget('currentUser');
-            DB::commit();
-            return redirect()->route('getLoginPage')->with('success','password recovered successfully..you can now login');
+                DB::beginTransaction();
+                $userTuUpdatePassword = User::find($currentUser->id);
+                $userTuUpdatePassword->update([
+                    'password' => Hash::make($password)
+                ]);
+                Password_Recover::where('user_id', $currentUser->id)->delete();
+                $request->session()->forget('currentUser');
+                DB::commit();
+                return redirect()->route('getLoginPage')->with('success','password recovered successfully..you can now login');
            } catch (\Throwable $th) {
                 DB::rollback();
                 return back()->withInput()->with('error','password confirmation do not match');
