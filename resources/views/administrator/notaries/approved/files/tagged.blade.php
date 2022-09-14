@@ -11,11 +11,11 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header" style="display: flex;justify-content:space-between;align-items:center">
-                <h4 class="card-title">Uploaded Files</h4>
-                <a href="{{route('getApprovedNotaries')}}" class="btn btn-success">Back To Approved Notaries Page</a>
+                <h4 class="card-title">Tagged Files</h4>
+                <a href="{{route('getApprovedNotaries')}}" class="btn btn-success">Back To Notaries Page</a>
             </div>
             <div class="card-body">
-                <p class="card-title-desc">All Uploaded Files for {{$notary->user->names}}</p>                 
+                <p class="card-title-desc">All Tagged Files for {{$notary->user->names}}</p>                 
                 <div class="table-responsive">
                     <table class="table table-striped mb-0">
 
@@ -24,21 +24,23 @@
                                 <th>#</th>
                                 <th>File Title</th>
                                 <th>File Code</th>
-                                <th>Uploaded Date</th>
+                                <th>Sender</th>
+                                <th>Sender Telephone</th>
                                 <th>File Document</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php $counter=1 ?>
-                            @foreach ($notaryFiles as $item)
+                            @foreach ($notaryTaggedFiles as $item)
                             <tr>
                                 <th scope="row">{{$counter}}</th>
                                 <?php $counter++ ?>
-                                <td>{{$item->filename}}</td>
-                                <td>{{$item->file_number}}</td>
-                                <td>{{$item->created_at->format('Y-m-d')}}</td>
+                                <td>{{$item->file->filename}}</td>
+                                <td>{{$item->file->file_number}}</td>
+                                <td>{{$item->sender->user->names}}</td>
+                                <td>{{$item->sender->user->telephone}}</td>
                                 <td>
-                                    <a href="{{route('downloadFile',[$item->id,'notary_uploaded_files'])}}" target="_blank">
+                                    <a href="{{route('downloadClientFile',[$item->file->id,'client_uploaded_files'])}}" target="_blank">
                                         <i class="icon nav-icon" data-eva="cloud-download-outline"></i>
                                     </a>
                                 </td>

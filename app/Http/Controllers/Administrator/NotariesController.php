@@ -36,9 +36,15 @@ class NotariesController extends Controller
 
     public function getNotaryFiles($notaryId)
     {
-        // return $notaryId;
         $notary = Notary::find($notaryId);
         $notaryFiles =  $notary->myFiles();
         return view('administrator.notaries.approved.files.uploaded', compact('notary','notaryFiles'));
+    }
+
+    public function getNotaryTaggedFiles($notaryId)
+    {
+        $notary = Notary::find($notaryId);
+        $notaryTaggedFiles =  $notary->receivedFiles()->get(); 
+        return view('administrator.notaries.approved.files.tagged', compact('notary','notaryTaggedFiles'));
     }
 }

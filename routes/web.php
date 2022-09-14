@@ -52,6 +52,7 @@ Route::prefix('administration')->group(function (){
             Route::prefix('/{notaryId}')->group(function (){
                 Route::put('changeAccountStatus', 'changeAccountStatus')->name('changeNotaryAccountStatus');
                 Route::get('/viewFiles', 'getNotaryFiles')->name('getNotaryFiles');
+                Route::get('/viewTaggedFiles','getNotaryTaggedFiles')->name('getNotaryTaggedFiles');
             });
         });
     });
