@@ -27,6 +27,7 @@ class User extends Authenticatable
         'telephone',
         'role_id',
         'is_active',
+        'has_updated_password',
         'password',
     ];
 

@@ -71,6 +71,13 @@
             background: gray; 
             border-radius: 3.125rem;
         }
+        #sidebar-menu ul li ul.sub-menu li a {
+            color: #d9d9d9 !important;
+        }
+        #sidebar-menu ul li ul.sub-menu li a:hover {
+            font-weight: 600;
+            transition: .5s;
+        }
     </style>
 
     

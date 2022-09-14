@@ -21,6 +21,7 @@ return new class extends Migration
             $table->bigInteger('telephone')->unique();
             $table->string('password')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->boolean('has_updated_password')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
