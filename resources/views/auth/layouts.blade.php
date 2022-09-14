@@ -66,7 +66,7 @@
                                                         <div class="testi-contain text-center">
                                                             <h5 class="font-size-20 mt-4">“Umurinzi”
                                                             </h5>
-                                                            <p class="font-size-15 text-muted mt-3 mb-0">Description 1</p>
+                                                            <p class="font-size-15 text-muted mt-3 mb-0">Leverage Digital Technologies by empowering Notaries and Receivers workflow</p>
                                                         </div>
                                                     </div>
 
@@ -74,7 +74,7 @@
                                                         <div class="testi-contain text-center">
                                                             <h5 class="font-size-20 mt-4">“Umurinzi”</h5>
                                                             <p class="font-size-15 text-muted mt-3 mb-0">
-                                                                Description 2
+                                                                Securing data and files of customers
                                                             </p>
                                                         </div>
                                                     </div>
@@ -83,7 +83,7 @@
                                                         <div class="testi-contain text-center">
                                                             <h5 class="font-size-20 mt-4">“Umurinzi”</h5>
                                                             <p class="font-size-15 text-muted mt-3 mb-0">
-                                                        Description 3
+                                                                Accessibility anywhere any time
                                                             </p>
                                                         </div>
                                                     </div>
