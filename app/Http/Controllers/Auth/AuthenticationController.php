@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\Auth\CheckUserRoleService;
 use App\Http\Services\Common\FileStoring;
 use App\Http\Services\Common\ValidateInputs;
+use App\Jobs\SMS\Auth\ConfirmRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Role;
@@ -79,7 +80,8 @@ class AuthenticationController extends Controller
             $names = $data['names'];
             $role = $data['role'];
             $email = $data['email'];
-            $telephone = $data['telephone'];   
+            $telephone = $data['telephone']; 
+            $randomCode = rand(1000000, 9999999);  
             $national_id = $request->national_id;
             if (!(new ValidateInputs)->validateNationalIDLength($national_id)) {
                 return back()->withInput()->with('error','The national ID Must consists of 16 digits');
@@ -101,7 +103,7 @@ class AuthenticationController extends Controller
                     'role_id' => Role::where('type',$data['role'])->value('id'),
                     'names' => $names,
                     'email' => $email,
-                    'telephone' => $telephone,
+                    'telephone' => '+'.$telephone,
                     'is_active' => false,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -137,8 +139,8 @@ class AuthenticationController extends Controller
                     'role_id' => Role::where('type',$data['role'])->value('id'),
                     'names' => $names,
                     'email' => $email,
-                    'telephone' => $telephone,
-                    'password' => Hash::make(12345),
+                    'telephone' => '+'.$telephone,
+                    'password' => Hash::make($randomCode),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -152,7 +154,7 @@ class AuthenticationController extends Controller
                 User::insert($newUser);
                 Client::insert($newClient);
                 DB::commit();
-                //TODO...Job To Send Welcome Message and Password
+                dispatch(new ConfirmRegistration($newUser, $randomCode, true));
                 return redirect()->route('getConfirmationPage');
             }
             

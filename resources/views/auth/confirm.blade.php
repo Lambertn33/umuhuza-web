@@ -28,7 +28,7 @@
                                                 @if ($data['role'] === \App\Models\Role::NOTARY)
                                                 <p class="text-muted">Thanks for registration... you will be notified soon after reviewing your application</p>
                                                 @else
-                                                <p class="text-muted">Thanks for registration... You will get a confirmation SMS containing your password</p>
+                                                <p class="text-muted">Thanks for registration... You will get a confirmation SMS containing your one time password</p>
                                                 @endif
                                                 <div class="mt-4">
                                                    @if ($data['role'] === \App\Models\Role::NOTARY)
