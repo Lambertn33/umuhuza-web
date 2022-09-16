@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Client\FilesController as ClientFilesController;
+use App\Http\Controllers\Common\MustChangePasswordController;
 use App\Http\Controllers\Notary\DashboardController as NotaryDashboardController;
 use App\Http\Controllers\Notary\FilesController as NotaryFilesController;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,13 @@ Route::controller(PasswordResetController::class)->group(function() {
                 Route::post('/','provideNewPasswordForPasswordReset')->name('provideNewPasswordForPasswordReset');
             });
         });
+    });
+});
+
+Route::controller(MustChangePasswordController::class)->group(function() {
+    Route::prefix('update_password')->group(function(){
+        Route::get('/', 'getPasswordChangePage')->name('getPasswordChangePage');
+        Route::post('/', 'updatePassword')->name('updatePassword');
     });
 });
 

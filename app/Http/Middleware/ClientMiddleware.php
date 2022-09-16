@@ -22,7 +22,11 @@ class ClientMiddleware
         if (Auth::check()) {
             if (Auth::user()->role_id == $clientRole->id) {
                 if (Auth::user()->is_active) {
-                    return $next($request);
+                    if (Auth::user()->has_updated_password) {
+                        return $next($request);
+                    } else {
+                        return back();
+                    }
                 } else {
                    Auth::logout();
                    return redirect()->route('getLoginPage')->with('error','Your account is locked.. please contact the system administrator');

@@ -15,6 +15,7 @@ use App\Models\Client;
 use App\Models\Notary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
 {
@@ -137,6 +138,7 @@ class AuthenticationController extends Controller
                     'names' => $names,
                     'email' => $email,
                     'telephone' => $telephone,
+                    'password' => Hash::make(12345),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -180,9 +182,17 @@ class AuthenticationController extends Controller
             if ((new CheckUserRoleService)->isAdministrator($authenticatedUser)) {
                 return redirect()->route('getAdminDashboardOverview');
             }else if ((new CheckUserRoleService)->isNotary($authenticatedUser)) {
-                return redirect()->route('getNotaryDashboardOverview');
+                if ($authenticatedUser->has_updated_password) {
+                    return redirect()->route('getNotaryDashboardOverview');
+                } else {
+                    return redirect()->route('getPasswordChangePage');
+                }
             } else{
-                return redirect()->route('getClientDashboardOverview');
+                if ($authenticatedUser->has_updated_password) {
+                    return redirect()->route('getClientDashboardOverview');
+                } else {
+                    return redirect()->route('getPasswordChangePage');
+                }
             }
            } else {
              return back()->withInput()->with('error','Your account is locked.. please contact the system administrator');
@@ -199,6 +209,7 @@ class AuthenticationController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('getLoginPage');
     }
+
 
     public function storeFile($request, $file, $tel, $disk) {
         $uploadedFile = $request->file($file);
