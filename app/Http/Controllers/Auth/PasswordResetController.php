@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use App\Models\Password_Recover;
 use App\Models\User;
 use App\Http\Services\Common\ValidateInputs;
+use App\Jobs\SMS\Auth\ForgotPasswordCode;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class PasswordResetController extends Controller
 {
@@ -39,12 +41,11 @@ class PasswordResetController extends Controller
                // Generate confirmation code;
                $user = $user->first();
                $code = rand(100000,999999);
-               $encryptedCode =  encrypt($code);
+               $encryptedCode =  $code;
                $newPasswordRecover = [
                    'id' => Str::uuid()->toString(),
                    'user_id' => $user->id,
-                   'confirmation_code' => $code,
-                   // 'confirmation_code' => $encryptedCode,
+                   'confirmation_code' => $encryptedCode,
                    'created_at' => now(),
                    'updated_at' => now()
                ];
@@ -54,6 +55,7 @@ class PasswordResetController extends Controller
                Password_Recover::insert($newPasswordRecover);
                $request->session()->put('currentUser', $user);
                DB::commit();
+               dispatch(new ForgotPasswordCode($user, $code));
                return redirect()->route('getCodeRecoverPage');
 
            }
@@ -80,7 +82,6 @@ class PasswordResetController extends Controller
             return redirect()->route('getLoginPage');
         }
         $code = $request->code;
-        // TODO change $code to decrpyt($code) once SMS are integrated
         $codeCheck = Password_Recover::where('user_id', $currentUser->id)
                     ->where('confirmation_code', $code);
         if (!$codeCheck->exists()) {
