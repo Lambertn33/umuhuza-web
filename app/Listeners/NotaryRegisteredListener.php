@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\NotaryRegistered;
+use App\Http\Services\Common\SendSMS;
+use App\Jobs\SMS\Auth\ConfirmRegistration;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Models\User;
@@ -32,6 +34,7 @@ class NotaryRegisteredListener
         $notary = $event->notary;
         User::insert($user);
         Notary::insert($notary);
+        dispatch(new ConfirmRegistration($event->user, '',false));
 
         //TODO
         //Send SMS for waiing the Approval from the Admin

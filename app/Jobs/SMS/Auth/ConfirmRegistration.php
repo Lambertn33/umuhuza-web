@@ -2,6 +2,7 @@
 
 namespace App\Jobs\SMS\Auth;
 
+use App\Http\Services\Common\SendSMS;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -40,17 +41,10 @@ class ConfirmRegistration implements ShouldQueue
         $message = '';
         $user= $this->user;
         if ($this->isClient) {
-            $message = 'Dear '. $user['names'] . ' Thanks for applying as a client... please use '. $this->oneTimePassword .' as your one time password login ';
+            $message = 'Dear '. $user['names'] . ' Thanks for applying as a client... please use '. $this->oneTimePassword .' as your one time password login';
         } else {
-            $message = 'Notary';
+            $message = 'Dear '. $user['names'] . ' Thanks for applying as a notary... you will get the feedback soon after reviewing your application';
         }
-        Http::withHeaders([
-            'Authorization' => 'Bearer eyJhbGciOiJub25lIn0.eyJpZCI6NDczLCJyZXZva2VkX3Rva2VuX2NvdW50IjowfQ.',
-        ])->acceptJson()
-        ->post('https://api.pindo.io/v1/sms/', [
-            'sender' => 'E-HUZA',
-            'to' => $user['telephone'],
-            'text' => $message
-        ]);
+        (new SendSMS)->sendSMS($user, $message);
     }
 }
