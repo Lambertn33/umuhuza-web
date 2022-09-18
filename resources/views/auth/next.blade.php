@@ -73,8 +73,8 @@
                                             </div>  
                                             <div class="form-floating form-floating-custom mb-4">
                                                 <div class="mt-3">
-                                                    <label for="formFile" accept="application/pdf" class="form-label">Upload National ID Copy (<b class="text-danger">Only PDF allowed</b>)</label>
-                                                    <input name="national_id_photocopy" required class="form-control" type="file" id="formFile">
+                                                    <label for="formFile" class="form-label">Upload National ID Copy (<b class="text-danger">Only PDF allowed</b>)</label>
+                                                    <input name="national_id_photocopy" accept="application/pdf" required class="form-control" type="file" id="formFile">
                                                 </div>
                                             </div>  
                                             <div class="form-floating form-floating-custom mb-4">
