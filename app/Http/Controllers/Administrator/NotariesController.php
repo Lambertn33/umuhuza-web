@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\Common\AccountStatus;
 use Illuminate\Http\Request;
 use App\Models\Notary;
-use App\Models\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class NotariesController extends Controller
 {
@@ -16,6 +17,7 @@ class NotariesController extends Controller
         $this->middleware(['adminMiddleware','auth.session']);
     }
 
+    //APPROVED NOTARIES
     public function getApprovedNotaries()
     {
         $approvedNotaries = Notary::where('status', \App\Models\Notary::APPROVED)->get();
@@ -46,5 +48,33 @@ class NotariesController extends Controller
         $notary = Notary::find($notaryId);
         $notaryTaggedFiles =  $notary->receivedFiles()->get(); 
         return view('administrator.notaries.approved.files.tagged', compact('notary','notaryTaggedFiles'));
+    }
+
+    //PENDING NOTARIES
+
+    public function getPendingNotaries()
+    {
+        $pendingNotaries = Notary::where('status', \App\Models\Notary::PENDING)->get();
+        return view('administrator.notaries.pending.index', compact('pendingNotaries'));
+    }
+
+    public function getPendingNotaryInfo($id)
+    {
+        $pendingNotary = Notary::with('user')->find($id);
+        return view('administrator.notaries.pending.show', compact('pendingNotary'));
+    }
+
+    public function downloadNotaryNationalId($id, $disk)
+    {
+        $notary = Notary::find($id);
+        $filename = Str::random(6);
+        $path = Storage::disk($disk)->path($notary->national_id_photocopy);
+        $type = mime_content_type($path);
+
+        $header = [
+            'Content-Type'        => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"'
+        ];
+        return response()->file($path, $header);
     }
 }

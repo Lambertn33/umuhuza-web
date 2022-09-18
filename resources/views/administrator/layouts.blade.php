@@ -417,7 +417,7 @@
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{route('getApprovedNotaries')}}" data-key="t-products">Notaries List</a></li>
-                                    <li><a href="#" data-key="t-products">Pending Applications</a></li>
+                                    <li><a href="{{route('getPendingNotaries')}}" data-key="t-products">Pending Applications</a></li>
                                     <li><a href="#" data-key="t-products">Rejected Applications</a></li>
                                 </ul>
                             </li>

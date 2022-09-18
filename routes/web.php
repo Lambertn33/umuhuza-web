@@ -73,11 +73,20 @@ Route::prefix('administration')->group(function (){
     //Notaries
     Route::controller(AdminNotariesController::class)->group(function() {
         Route::prefix('notaries')->group(function (){
-            Route::get('/approved','getApprovedNotaries')->name('getApprovedNotaries');
-            Route::prefix('/{notaryId}')->group(function (){
-                Route::put('changeAccountStatus', 'changeAccountStatus')->name('changeNotaryAccountStatus');
-                Route::get('/viewFiles', 'getNotaryFiles')->name('getNotaryFiles');
-                Route::get('/viewTaggedFiles','getNotaryTaggedFiles')->name('getNotaryTaggedFiles');
+            Route::prefix('approved')->group(function() {
+                Route::get('/','getApprovedNotaries')->name('getApprovedNotaries');                    
+                Route::prefix('{notaryId}')->group(function() {
+                    Route::put('changeAccountStatus', 'changeAccountStatus')->name('changeNotaryAccountStatus');
+                    Route::get('/viewFiles', 'getNotaryFiles')->name('getNotaryFiles');
+                    Route::get('/viewTaggedFiles','getNotaryTaggedFiles')->name('getNotaryTaggedFiles');
+                });
+            });
+            Route::prefix('pending')->group(function() {
+                Route::get('/','getPendingNotaries')->name('getPendingNotaries');
+                Route::prefix('{notaryId}')->group(function() {
+                    Route::get('/','getPendingNotaryInfo')->name('getPendingNotaryInfo');
+                    Route::get('/{disk}/download','downloadNotaryNationalId')->name('downloadNotaryNationalId');
+                });
             });
         });
     });
