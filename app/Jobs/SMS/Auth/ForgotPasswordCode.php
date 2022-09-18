@@ -37,13 +37,6 @@ class ForgotPasswordCode implements ShouldQueue
     public function handle()
     {
         $message = 'Dear '.$this->user->names.' the code '. $this->code .' is for resetting your password';
-        Http::withHeaders([
-            'Authorization' => 'Bearer '.env("SMS_TOKEN").'',
-        ])->acceptJson()
-        ->post(''.env("SMS_URL").'', [
-            'sender' => 'E-HUZA',
-            'to' => '+'.$this->user->telephone,
-            'text' => $message
-        ]);
+        (new SendSMS)->sendSMS($this->user, $message);
     }
 }

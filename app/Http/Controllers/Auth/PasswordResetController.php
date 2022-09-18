@@ -60,7 +60,6 @@ class PasswordResetController extends Controller
 
            }
         } catch (\Throwable $th) {
-            throw $th;
             DB::rollback();
             return back()->withInput()->with('error','an error occured...please try again');
         }
