@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
 use App\Http\Services\Common\AccountStatus;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Services\Common\ImageDownload;
 use App\Models\Notary;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class NotariesController extends Controller
 {
@@ -76,5 +76,11 @@ class NotariesController extends Controller
             'Content-Disposition' => 'inline; filename="' . $filename . '"'
         ];
         return response()->file($path, $header);
+    }
+
+    public function downloadNotaryPassportPicture($id, $disk)
+    {
+        $notary = Notary::find($id);
+        return (new ImageDownload)->dowloadImage($notary, $disk);
     }
 }

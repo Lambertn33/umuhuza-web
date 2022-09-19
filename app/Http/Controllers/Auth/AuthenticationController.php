@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
-use App\Models\Notary;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;

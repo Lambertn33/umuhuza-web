@@ -86,6 +86,7 @@ Route::prefix('administration')->group(function (){
                 Route::prefix('{notaryId}')->group(function() {
                     Route::get('/','getPendingNotaryInfo')->name('getPendingNotaryInfo');
                     Route::get('/{disk}/download','downloadNotaryNationalId')->name('downloadNotaryNationalId');
+                    Route::get('/{disk}/downloadImage','downloadNotaryPassportPicture')->name('downloadNotaryPassportPicture');
                 });
             });
         });

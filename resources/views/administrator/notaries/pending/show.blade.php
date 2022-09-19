@@ -17,7 +17,7 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="tab" href="#files" role="tab">
                 <i class="bx bx-clipboard font-size-20"></i>
-                <span class="d-none d-sm-block">Documents</span> 
+                <span class="d-none d-sm-block">Uploaded Documents</span> 
             </a>
         </li>
     </ul>
@@ -51,8 +51,10 @@
             <div>
                 <div class="row">
                     <div class="col-md-6">
-                        <h5 class="font-size-16 mb-4">Passport Image</h5>
-                        <img src="/storage/notary_passport_images/{{$pendingNotary->image}}" alt="123" width="50%" height="100vh">
+                        <h5 class="font-size-16 mb-4">Passport Image (<b class="text text-danger">Click to view</b>)</h5>
+                        <a href="{{route('downloadNotaryPassportPicture',[$pendingNotary->id,'notary_passport_images'])}}" target="_blank">
+                            <img src="/assets/images/picture_image.png" alt="" width="100">
+                        </a>
                     </div>
                     <div class="col-md-6">
                         <h5 class="font-size-16 mb-4">Uploaded National ID Photocopy (<b class="text text-danger">Click to view</b>)</h5>
@@ -67,7 +69,9 @@
         <div>
             <a href="" class="btn btn-success">Approve Application</a>
             <a href="" class="btn btn-danger">Reject Application</a>
+            <a href="{{route('')}}" class="btn btn-primary">Back To Pending Applications</a>
         </div>
     </div>
 </div>
+<br>
 @endsection
