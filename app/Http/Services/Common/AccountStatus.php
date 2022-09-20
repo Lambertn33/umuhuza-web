@@ -7,19 +7,11 @@
     public function changeAccountStatus($user)
     {
         DB::beginTransaction();
-        if ($user->is_active) {
-            $user->update([
-               'is_active' => false
-            ]);
-            DB::commit();
-            return back()->with('success','Account closed successfully');
-        } else {
-            $user->update([
-               'is_active' => true
-            ]);
-            DB::commit();
-            return back()->with('success','Account re-activated successfully');
-        }
+        $user->update([
+            'is_active' => $user->is_active ? false : true
+        ]);
+        DB::commit();
+        return back()->with('success', !$user->is_active ? 'Account closed successfully' : 'Account re-activated successfully');
     }
 }
 

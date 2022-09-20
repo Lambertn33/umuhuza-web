@@ -7,12 +7,9 @@
     
     public function getFileOwner($file)
     {
-        $fileOwner = '';
-        if ($file->file_type == \App\Models\File::NOTARY_UPLOAD) {
-            $fileOwner =Notary::where('id', $file->owner)->first();
-        } else {
-            $fileOwner =Client::where('id', $file->owner)->first();
-        }
+        $fileOwner = $file->file_type == \App\Models\File::NOTARY_UPLOAD ?
+                Notary::where('id', $file->owner)->first()
+                : Client::where('id', $file->owner)->first();
 
         return $fileOwner;
     }

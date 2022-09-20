@@ -36,7 +36,8 @@
                         <tbody>
                             <?php $counter=1 ?>
                             @foreach ($allSystemClients as $item)
-                            <th scope="row">{{$counter}}</th>
+                            <tr>
+                                <th scope="row">{{$counter}}</th>
                             <?php $counter++ ?>
                             <td>{{$item->user->names}}</td>
                             <td>{{$item->user->email}}</td>
@@ -67,6 +68,7 @@
                                     </ul>
                                 </div>
                             </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
