@@ -35,7 +35,9 @@ class UsersConfirmFile implements ShouldQueue
      */
     public function handle()
     {
-        $message = 'Dear '.$this->user['names']. ' the code '. $this->user['confirmation_code']. ' is to confirm the file #'. $this->file->file_number .'';
-        (new SendSMS)->sendSMS($this->user, $message);
+        $user = $this->user;
+        $file = $this->file;
+        $message = 'Dear '.$user['names']. ' the code '. $user['confirmation_code']. ' is to confirm the file #'. $file->file_number .'';
+        (new SendSMS)->sendSMS($user, $message);
     }
 }

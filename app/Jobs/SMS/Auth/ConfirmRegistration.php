@@ -40,11 +40,11 @@ class ConfirmRegistration implements ShouldQueue
     {
         $message = '';
         $user= $this->user;
-        if ($this->isClient) {
-            $message = 'Dear '. $user['names'] . ' Thanks for applying as a client... please use '. $this->oneTimePassword .' as your one time password login';
-        } else {
-            $message = 'Dear '. $user['names'] . ' Thanks for applying as a notary... you will get the feedback soon after reviewing your application';
-        }
+        $isClient = $this->isClient;
+        $message = $isClient ?
+                 'Dear '. $user['names'] . ' Thanks for applying as a client... please use '. $this->oneTimePassword .' as your one time password login'
+                 : 'Dear '. $user['names'] . ' Thanks for applying as a notary... you will get the feedback soon after reviewing your application';
+                 
         (new SendSMS)->sendSMS($user, $message);
     }
 }

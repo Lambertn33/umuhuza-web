@@ -37,7 +37,10 @@ class FileProcessed implements ShouldQueue
      */
     public function handle()
     {
-        $message = 'Dear '.$this->client->user->names.' a file with code '.$this->file->file->file_number.' has been processed successfully by ' .$this->notary->user->names.' ';
-        (new SendSMS)->sendSMS($this->client->user, $message);
+       $file =  $this->file->file;
+       $client = $this->client;
+       $notary = $this->notary;
+       $message = 'Dear '.$client->user->names.' a file with code '.$file->file_number.' has been processed successfully by ' .$notary->user->names.' ';
+       (new SendSMS)->sendSMS($client->user, $message);
     }
 }

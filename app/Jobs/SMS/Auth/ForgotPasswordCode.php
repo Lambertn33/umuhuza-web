@@ -36,7 +36,10 @@ class ForgotPasswordCode implements ShouldQueue
      */
     public function handle()
     {
-        $message = 'Dear '.$this->user->names.' the code '. $this->code .' is for resetting your password';
-        (new SendSMS)->sendSMS($this->user, $message);
+        $user = $this->user;
+        $code = $this->code;
+
+        $message = 'Dear '.$user->names.' the code '. $code .' is for resetting your password';
+        (new SendSMS)->sendSMS($user, $message);
     }
 }

@@ -35,7 +35,9 @@ class ConfirmNotary implements ShouldQueue
      */
     public function handle()
     {
-        $message = 'Dear '.$this->user->names.' your application as a notary has been reviewed and accepted.. please use '. $this->oneTimePassword .' as your one time password login ';
+        $user = $this->user;
+        $password = $this->oneTimePassword;
+        $message = 'Dear '.$user->names.' your application as a notary has been reviewed and accepted.. please use '. $password .' as your one time password login ';
         (new SendSMS)->sendSMS($this->user, $message);
     }
 }

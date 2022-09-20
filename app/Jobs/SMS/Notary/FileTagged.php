@@ -37,7 +37,11 @@ class FileTagged implements ShouldQueue
      */
     public function handle()
     {
-        $message = 'Dear '.$this->notary->user->names.' a file with code '.$this->fileCode.' has been sent to you by '.$this->client->user->names.' and it is waiting to be processed';
-        (new SendSMS)->sendSMS($this->notary->user, $message);
+        $notary = $this->notary;
+        $client = $this->client;
+        $fileCode = $this->fileCode;
+
+        $message = 'Dear '.$notary->user->names.' a file with code '.$fileCode.' has been sent to you by '.$client->user->names.' and it is waiting to be processed';
+        (new SendSMS)->sendSMS($notary->user, $message);
     }
 }
