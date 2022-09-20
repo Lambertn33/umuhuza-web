@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\Common\AccountStatus;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Services\Common\ImageDownload;
+use App\Jobs\SMS\Admin\ConfirmNotary;
 use App\Models\Notary;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class NotariesController extends Controller
 {
@@ -62,6 +65,27 @@ class NotariesController extends Controller
     {
         $pendingNotary = Notary::with('user')->find($id);
         return view('administrator.notaries.pending.show', compact('pendingNotary'));
+    }
+
+    public function approveNotary($id)
+    {
+       $notary = Notary::with('user')->find($id);
+       $randomCode = rand(100000, 999999);
+       try {
+            $user = User::find($notary->user_id);
+            $notary->update([
+                'status' => \App\Models\Notary::APPROVED
+            ]);
+            $user->update([
+                'password' => Hash::make($randomCode),
+                'is_active' => true
+            ]);
+            dispatch(new ConfirmNotary($user, $randomCode));
+            return redirect()->route('getPendingNotaries')->with('success','application approved successfully');
+       } catch (\Throwable $th) {
+          DB::rollback();
+          return redirect()->route('getPendingNotaries')->with('error','an error occured..please try again');
+       }
     }
 
     public function downloadNotaryNationalId($id, $disk)

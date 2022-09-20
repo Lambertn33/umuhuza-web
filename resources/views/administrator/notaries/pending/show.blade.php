@@ -67,9 +67,13 @@
         </div>
         <br>
         <div>
-            <a href="" class="btn btn-success">Approve Application</a>
+            <a href="#" onclick="document.getElementById('{{$pendingNotary->id}}-approve').submit();" class="btn btn-success">Approve Application</a>
             <a href="" class="btn btn-danger">Reject Application</a>
-            <a href="{{route('')}}" class="btn btn-primary">Back To Pending Applications</a>
+            <a href="{{route('getPendingNotaries')}}" class="btn btn-primary">Back To Pending Applications</a>
+            <form action="{{route('approveNotary', $pendingNotary->id)}}" id="{{$pendingNotary->id}}-approve" method="POST" style="display: none">
+                @csrf
+                <input type="hidden" name="_method" value="PUT">
+            </form>
         </div>
     </div>
 </div>

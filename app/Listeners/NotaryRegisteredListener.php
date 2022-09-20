@@ -34,9 +34,6 @@ class NotaryRegisteredListener
         $notary = $event->notary;
         User::insert($user);
         Notary::insert($notary);
-        //dispatch(new ConfirmRegistration($event->user, '',false));
-
-        //TODO
-        //Send SMS for waiing the Approval from the Admin
+        dispatch(new ConfirmRegistration($event->user, '',false));
     }
 }
