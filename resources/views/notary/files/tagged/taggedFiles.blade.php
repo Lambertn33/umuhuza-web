@@ -36,6 +36,7 @@
                                 <th>File title</th>
                                 <th>File number</th>
                                 <th>File Sender</th>
+                                <th>Sender Telephone</th>
                                 <th>Sent Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -50,6 +51,7 @@
                                 <td>{{$item->file->filename}}</td>
                                 <td>{{$item->file->file_number}}</td>
                                 <td>{{$item->sender->user->names}}</td>
+                                <td>{{$item->sender->user->telephone}}</td>
                                 <td>{{$item->created_at->format('m-d-Y')}}</td>
                                 <td>
                                     @if ($item->status == \App\Models\File_Sending::PENDING)

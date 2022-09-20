@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\File;
 use App\Models\File_Sending;
 use App\Http\Services\Common\FileDownload;
+use App\Jobs\SMS\Notary\FileTagged;
 use Illuminate\Support\Facades\Storage;
 
 class FilesController extends Controller
@@ -76,6 +77,7 @@ class FilesController extends Controller
             File::insert($newFile);
             File_Sending::insert($newFileSending);
             DB::commit();
+            dispatch(new FileTagged($authenticatedClient, $notary, $code));
             //TODO send SMS to notary that he received a file
             return redirect()->route('myClientFiles')->with('success','File sent to the selected notary successfully...');
 

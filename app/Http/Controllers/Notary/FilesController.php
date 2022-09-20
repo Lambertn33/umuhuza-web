@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Services\Common\FileStoring;
 use App\Http\Services\Common\ValidateInputs;
+use App\Jobs\SMS\Client\FileProcessed;
+use App\Jobs\SMS\Notary\UsersConfirmFile;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Collection;
@@ -139,6 +141,7 @@ class FilesController extends Controller
         $national_ids = $request->national_ids;
         $telephones = $request->telephones;
         $usersToConfirm = [];
+        $randomCodes = [];
         if (is_null($national_ids)) {
             return back()->withInput()->with('error','at least one confirmation user is required');
         }
@@ -157,14 +160,15 @@ class FilesController extends Controller
             }
         }
         for ($i=0; $i < count($telephones) ; $i++) { 
+            $randomCodes[] = rand(100000, 999999);
             $usersToConfirm[] = [
                 'id' => Str::uuid()->toString(),
                 'file_confirmation_id' => $newFileConfirmation['id'],
                 'names' => $names[$i],
-                'telephone' => $telephones[$i],
+                'telephone' => "+".$telephones[$i],
                 'national_id' => $national_ids[$i],
                 'status' => \App\Models\File_Confirmation_User::PENDING,
-                'confirmation_code' => rand(100000, 999999),
+                'confirmation_code' => $randomCodes[$i],
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -172,7 +176,8 @@ class FilesController extends Controller
         File_Confirmation::insert($newFileConfirmation);
         foreach ($usersToConfirm as $user) {
             File_Confirmation_User::insert($user);
-            //TODO create Job to send SMS to users using telephone and confirmation code 
+            //SEND SMS TO USERS
+            dispatch(new UsersConfirmFile($fileToProcess, $user));
         }
         DB::commit();
         return redirect()->route('getFileToConfirm',$newFileConfirmation['id']);
@@ -218,9 +223,19 @@ class FilesController extends Controller
         }
        if ($fileConfirmation->file->file_type == \App\Models\File::CLIENT_UPLOAD) {
             $fileToUpdate = $fileConfirmation->file->sending;
-            $fileToUpdate->update([
-                'status' => \App\Models\File_Sending::RECEIVED
-            ]);
+            $notary = $fileToUpdate->receiver;
+            $client = $fileToUpdate->sender;
+            try {
+                $fileToUpdate->update([
+                    'status' => \App\Models\File_Sending::RECEIVED
+                ]);
+                //TODO sent SMS to client that file has been processed successfully
+                dispatch(new FileProcessed($client, $fileConfirmation, $notary));
+
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return back()->withInput()->with('danger','an error occured...please try again');
+            }
        }
        if ($fileConfirmation->file->file_type == \App\Models\File::NOTARY_UPLOAD) {
            return redirect()->route('myNotaryFiles')->with('success','Uploaded file Confirmed and saved successfully');

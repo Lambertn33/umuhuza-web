@@ -85,7 +85,7 @@
                         class="form-control" id="national_id" placeholder="Enter National ID" required name="national_ids[]">
                     </div>
                     <div class="mb-3">
-                        <label for="telephone" class="form-label">User Telephone</label>
+                        <label for="telephone" class="form-label">User Telephone (<b class="text-danger">format 2507...</b>)</label>
                         <input type="tel" class="form-control" id="telephone" name="telephones[]" maxlength="12" required>
                     </div>
                     <div>
