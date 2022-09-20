@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Client\FilesController as ClientFilesController;
+use App\Http\Controllers\Common\FileSearchController;
 use App\Http\Controllers\Common\MustChangePasswordController;
 use App\Http\Controllers\Notary\DashboardController as NotaryDashboardController;
 use App\Http\Controllers\Notary\FilesController as NotaryFilesController;
@@ -26,6 +27,10 @@ Route::get('/', function(){
     return redirect()->route('getLoginPage');
 });
 
+Route::controller(FileSearchController::class)->prefix('file_search')->group(function() {
+    Route::get('/','getFileSearchPage')->name('getFileSearchPage');
+    Route::post('/','searchFile')->name('searchFile');
+});
 Route::controller(AuthenticationController::class)->group(function () {
     Route::prefix('login')->group(function() {
         Route::get('/','getLoginPage')->name('getLoginPage');

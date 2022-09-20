@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Common\TextFormat;
 use Illuminate\Http\Request;
 use App\Models\Password_Recover;
 use App\Models\User;
@@ -12,7 +11,6 @@ use App\Jobs\SMS\Auth\ForgotPasswordCode;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 
 class PasswordResetController extends Controller
 {

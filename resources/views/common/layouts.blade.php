@@ -25,6 +25,10 @@
     </head>
 
     <style>
+        .logo-img {
+            margin-top: 1.25rem;
+            width: 90%;
+        }
         table.datatable.no-footer {
             border: none;
         }
@@ -302,13 +306,7 @@
 
                 <!-- LOGO -->
                 <div class="navbar-brand-box">
-                    <a href="#" class="logo logo-dark">
-                       <h2>LOGO</h2>
-                    </a>
-
-                    <a href="#" class="logo logo-light">
-                       <h2>LOGO</h2>
-                    </a>
+                    <img src="/assets/images/umurinzi_logo.jpg" width="100%" alt="" class="logo-img">
                 </div>
 
                 <button type="button" class="btn btn-sm px-3 header-item vertical-menu-btn topnav-hamburger">

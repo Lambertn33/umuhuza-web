@@ -70,7 +70,7 @@
                                                 </form>
                                             </li>
                                             @else
-                                               <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target=".bs-{{$file->id}}">View Confirmed Users</a></li>
+                                               <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target=".bs-{{$file->id}}">View Confirmed Users</a></li>
                                             @endif
                                         </ul>
                                     </div>

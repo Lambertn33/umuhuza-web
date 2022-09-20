@@ -17,6 +17,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('file_id');
             $table->string('requested_by');
+            $table->bigInteger('telephone');
+            $table->string('reason');
             $table->enum('status', \App\Models\File_Access_Request::STATUS)->default(\App\Models\File_Access_Request::PENDING);
             $table->boolean('has_been_viewed')->default(false);
             $table->timestamps();

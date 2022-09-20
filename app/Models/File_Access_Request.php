@@ -19,7 +19,7 @@ class File_Access_Request extends Model
     const REJECTED = self::STATUS[2];
 
     protected $fillable = [
-        'id', 'file_id','requested_by','status','has_been_viewed'
+        'id', 'file_id','requested_by','telephone','reason','status','has_been_viewed','notary'
     ];
 
     protected $casts = [
