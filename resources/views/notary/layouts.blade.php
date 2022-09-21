@@ -305,7 +305,7 @@
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{route('myNotaryFiles')}}" data-key="t-products">Uploaded Files</a></li>
                                     <li><a href="{{route('myTaggedFiles')}}" data-key="t-products">Tagged Files</a></li>
-                                    <li><a href="#" data-key="t-products">Files Access Requests</a></li>
+                                    <li><a href="{{route('myFileAccessRequests')}}" data-key="t-products">Files Access Requests</a></li>
                                 </ul>
                             </li>
 

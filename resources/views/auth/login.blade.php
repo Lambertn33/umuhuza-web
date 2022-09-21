@@ -66,7 +66,7 @@
                                         </div>
                                         <div class="mt-0 pt-3 text-center">
                                             <p class="text-muted mb-0">Want to search a file ? <a href="{{route('getFileSearchPage')}}"
-                                                class="text-primary fw-semibold"> Click here</a> </p>
+                                                class="text-primary fw-semibold"> Search here</a> </p>
                                         </div>
                                     </div>
                                     <div class="mt-4 text-center">

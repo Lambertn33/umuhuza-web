@@ -19,8 +19,10 @@ return new class extends Migration
             $table->string('requested_by');
             $table->bigInteger('telephone');
             $table->string('reason');
+            $table->uuid('notary');
+            $table->string('access_code')->nullable();
             $table->enum('status', \App\Models\File_Access_Request::STATUS)->default(\App\Models\File_Access_Request::PENDING);
-            $table->boolean('has_been_viewed')->default(false);
+            $table->boolean('has_been_viewed')->default(0);
             $table->timestamps();
         });
     }

@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Services\Common\FileStoring;
 use App\Http\Services\Common\ValidateInputs;
 use App\Jobs\SMS\Client\FileProcessed;
+use App\Jobs\SMS\Notary\FileAccessApproved;
 use App\Jobs\SMS\Notary\UsersConfirmFile;
+use App\Models\File_Access_Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Collection;
@@ -42,6 +44,31 @@ class FilesController extends Controller
         return view('notary.files.tagged.taggedFiles', compact('authenticatedNotary','myTaggedFiles'));
     }
 
+    public function myFileAccessRequests()
+    {
+        $authenticatedNotary = Auth::user()->notary;
+        $fileAccessRequests = File_Access_Request::where('notary', $authenticatedNotary->id)->get();
+        return view('notary.files.access_requests.index', compact('authenticatedNotary','fileAccessRequests'));
+    }
+
+    public function giveAccessToFile(Request $request, $id)
+    {
+        $fileAccess = File_Access_Request::find($id);
+        $accessCode = $request->accessCode;
+        try {
+            DB::beginTransaction();
+            $fileAccess->update([
+                'access_code' => $accessCode,
+                'status' => \App\Models\File_Access_Request::APPROVED
+            ]);
+            DB::commit();
+            dispatch(new FileAccessApproved($fileAccess, $accessCode));
+            return back()->with('success', 'file access request approved successfully..');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return back()->withInput()->with('error','an error occured...please try again');
+        }
+    }
 
     public function addNewNotaryFile()
     {
@@ -58,6 +85,7 @@ class FilesController extends Controller
             $phoneTotalDigits = 12;
             $notaryTelephone =  Auth::user()->telephone;
             $notaryId = Auth::user()->notary->id;
+            $notary = Auth::user()->notary;
             $title = $request->title;
             $code = $request->code;
             $names = $request->names;
@@ -229,7 +257,6 @@ class FilesController extends Controller
                 $fileToUpdate->update([
                     'status' => \App\Models\File_Sending::RECEIVED
                 ]);
-                //TODO sent SMS to client that file has been processed successfully
                 dispatch(new FileProcessed($client, $fileConfirmation, $notary));
 
             } catch (\Throwable $th) {

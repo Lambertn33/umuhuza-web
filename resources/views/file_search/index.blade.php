@@ -18,7 +18,7 @@
                                     <div class="auth-content my-auto">
                                         <div class="text-center">
                                             <h5 class="mb-0">File Search !</h5>
-                                            <p class="text-muted mt-2">Provide the File Number</p>
+                                            <p class="text-muted mt-2">Provide the File Number and additional information</p>
                                         </div>
                                         @if (Session::has('error'))
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -50,7 +50,7 @@
                                                 </div>
                                             </div>
                                             <div class="mb-4">
-                                                <label for="input-username">Reason</label>
+                                                <label for="input-username">Reason for file access</label>
                                                 <textarea name="reason" cols="30" rows="5" class="form-control" required>
                                                     {{old('reason')}}
                                                 </textarea>

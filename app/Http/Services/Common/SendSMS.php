@@ -14,6 +14,18 @@
             'text' => $message
         ]);
     }
+
+    public function approveFileAccessRequest($telephone, $message)
+    {
+        return Http::withHeaders([
+            'Authorization' => 'Bearer '.env("SMS_TOKEN").'',
+        ])->acceptJson()
+        ->post(''.env("SMS_URL").'', [
+           'sender' => 'UMURINZI',
+            'to' => "+".$telephone,
+            'text' => $message
+        ]); 
+    }
 }
 
 ?>

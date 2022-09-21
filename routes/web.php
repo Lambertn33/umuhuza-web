@@ -30,6 +30,14 @@ Route::get('/', function(){
 Route::controller(FileSearchController::class)->prefix('file_search')->group(function() {
     Route::get('/','getFileSearchPage')->name('getFileSearchPage');
     Route::post('/','searchFile')->name('searchFile');
+    Route::prefix('code')->group(function() {
+        Route::get('/','getFileAccessCodePage')->name('getFileAccessCodePage');
+        Route::post('/','provideFileAccessCode')->name('provideFileAccessCode');
+    });
+    Route::get('viewFile', 'viewSearchedFile')->name('viewSearchedFile');
+    Route::prefix('{file}')->group(function() {
+        Route::get('/','downloadSearchedFile')->name('downloadSearchedFile');
+    });
 });
 Route::controller(AuthenticationController::class)->group(function () {
     Route::prefix('login')->group(function() {
@@ -129,6 +137,10 @@ Route::prefix('notary')->group(function (){
             Route::get('/','myTaggedFiles')->name('myTaggedFiles');
             Route::get('/{fileId}/getFileToProcess','getFileToProcess')->name('getFileToProcess');
             Route::post('/{fileId}/processClientFile','processClientFile')->name('processClientFile');
+        });
+        Route::prefix('myFileAccessRequests')->group(function() {
+            Route::get('/','myFileAccessRequests')->name('myFileAccessRequests');
+            Route::post('/{file_access}','giveAccessToFile')->name('giveAccessToFile');
         });
     });
 });
