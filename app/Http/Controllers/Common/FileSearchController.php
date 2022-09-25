@@ -17,7 +17,6 @@ class FileSearchController extends Controller
 {
     public function getFileSearchPage(Request $request)
     {
-        $request->session()->flush();
         return view('file_search.index');
     }
 
@@ -115,6 +114,7 @@ class FileSearchController extends Controller
            $request->session()->flush();
            return (new FileDownload)->downloadFile($file, $disk);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with('error', 'an error occured...try download again');
         }
     }
