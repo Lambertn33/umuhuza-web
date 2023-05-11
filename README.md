@@ -1,5 +1,5 @@
 # UMUHUZA WEB
-This a simple Laravel project which is used as an intermediate between notaries and their clients
+This a simple PHP Laravel project which is used as an intermediate between notaries and their clients
 
 # steps
 1. Client logs in and upload a pdf document, tags a notary based on district
